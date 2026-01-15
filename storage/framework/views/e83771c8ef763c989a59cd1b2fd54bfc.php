@@ -20,13 +20,13 @@
             </div>
             
             <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in-up">
-                Association des Anciens Eleves
+                Association des Anciens Éleves
             </h1>
             <p class="text-2xl md:text-3xl mb-4 text-blue-200 animate-fade-in-up">
                 Lycee de Tivaouane - Generation 1993-1997
             </p>
             <p class="text-xl md:text-2xl mb-12 text-yellow-300 font-semibold animate-fade-in-up">
-                Unis par notre passe, engages pour l'avenir
+                Unis par notre passé, engagés pour l'avenir
             </p>
             
             <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up">
@@ -34,7 +34,7 @@
                     <i class="fas fa-user-plus mr-2"></i>Rejoindre l'association
                 </a>
                 <a href="#actions" class="inline-flex items-center px-10 py-5 border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-blue-900 transition-all duration-300 text-lg">
-                    <i class="fas fa-arrow-down mr-2"></i>Decouvrir nos actions
+                    <i class="fas fa-arrow-down mr-2"></i>Découvrir nos actions
                 </a>
             </div>
         </div>
@@ -51,15 +51,15 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div class="text-center">
-                <div class="text-5xl font-bold text-blue-900 mb-2">250+</div>
+                <div class="text-5xl font-bold text-blue-900 mb-2">50+</div>
                 <div class="text-gray-600 font-medium">Membres actifs</div>
             </div>
             <div class="text-center">
-                <div class="text-5xl font-bold text-yellow-500 mb-2">30</div>
+                <div class="text-5xl font-bold text-yellow-500 mb-2">1</div>
                 <div class="text-gray-600 font-medium">Ans d'existence</div>
             </div>
             <div class="text-center">
-                <div class="text-5xl font-bold text-green-600 mb-2">50+</div>
+                <div class="text-5xl font-bold text-green-600 mb-2">2+</div>
                 <div class="text-gray-600 font-medium">Projets realises</div>
             </div>
             <div class="text-center">
@@ -75,7 +75,7 @@
         <div class="text-center mb-16">
             <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Notre Association</h2>
             <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                Depuis plus de 30 ans, nous rassemblons les anciens eleves dans un esprit de solidarite
+                Depuis plus de un an, nous rassemblons les anciens éléves dans un esprit de solidarite
             </p>
         </div>
 
@@ -85,7 +85,7 @@
                     <i class="fas fa-users text-white text-3xl"></i>
                 </div>
                 <h3 class="text-2xl font-bold text-gray-900 mb-4">Reseau Solidaire</h3>
-                <p class="text-gray-600 leading-relaxed">Un reseau de plus de 250 membres actifs repartis dans 15 pays</p>
+                <p class="text-gray-600 leading-relaxed">Un reseau de plus de 51 membres actifs repartis dans 15 pays</p>
             </div>
 
             <div class="card-premium text-center group hover:scale-105 transition-transform duration-300">
@@ -93,14 +93,14 @@
                     <i class="fas fa-lightbulb text-white text-3xl"></i>
                 </div>
                 <h3 class="text-2xl font-bold text-gray-900 mb-4">Projets d'Impact</h3>
-                <p class="text-gray-600 leading-relaxed">Plus de 50 projets realises pour le developpement de notre communaute</p>
+                <p class="text-gray-600 leading-relaxed">Plus de 10 projets à realiser par an pour le developpement de notre ancien lycee</p>
             </div>
 
             <div class="card-premium text-center group hover:scale-105 transition-transform duration-300">
                 <div class="w-20 h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:rotate-6 transition-transform">
                     <i class="fas fa-heart text-white text-3xl"></i>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-900 mb-4">Entraide</h3>
+                <h3 class="text-2xl font-bold text-gray-900 mb-4">Entre aide</h3>
                 <p class="text-gray-600 leading-relaxed">Un esprit de solidarite qui unit nos membres depuis 30 ans</p>
             </div>
         </div>
@@ -124,7 +124,7 @@
                             <span class="text-blue-900 font-bold text-2xl">AD</span>
                         </div>
                         <div>
-                            <div class="font-bold text-lg">Amadou DIALLO</div>
+                            <div class="font-bold text-lg">Mansour Diop</div>
                             <div class="text-blue-200">President de l'Association</div>
                         </div>
                     </div>
