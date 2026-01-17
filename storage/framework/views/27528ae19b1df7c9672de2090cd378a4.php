@@ -26,7 +26,7 @@
                     <a href="<?php echo e(route('home')); ?>" class="text-gray-700 hover:text-blue-600 font-medium">Accueil</a>
                     <a href="<?php echo e(route('about')); ?>" class="text-gray-700 hover:text-blue-600 font-medium">A propos</a>
                     <a href="<?php echo e(route('posts.index')); ?>" class="text-gray-700 hover:text-blue-600 font-medium">Actualites</a>
-                    <a href="<?php echo e(route('events.index')); ?>" class="text-gray-700 hover:text-blue-600 font-medium">Evenements</a>
+                    <!-- <a href="<?php echo e(route('events.index')); ?>" class="text-gray-700 hover:text-blue-600 font-medium">Evenements</a> -->
                     <a href="/galerie" class="text-gray-700 hover:text-blue-600 font-medium">Galerie</a>
                 </div>
                 
@@ -50,7 +50,6 @@
                 <a href="<?php echo e(route('home')); ?>" class="block py-2">Accueil</a>
                 <a href="<?php echo e(route('about')); ?>" class="block py-2">A propos</a>
                 <a href="<?php echo e(route('posts.index')); ?>" class="block py-2">Actualites</a>
-                <a href="<?php echo e(route('events.index')); ?>" class="block py-2">Evenements</a>
                 <a href="/galerie" class="block py-2">Galerie</a>
             </div>
         </div>
@@ -90,7 +89,6 @@
                         <li><a href="<?php echo e(route('home')); ?>" class="text-gray-300 hover:text-white">Accueil</a></li>
                         <li><a href="<?php echo e(route('about')); ?>" class="text-gray-300 hover:text-white">A propos</a></li>
                         <li><a href="<?php echo e(route('posts.index')); ?>" class="text-gray-300 hover:text-white">Actualites</a></li>
-                        <li><a href="<?php echo e(route('events.index')); ?>" class="text-gray-300 hover:text-white">Evenements</a></li>
                     </ul>
                 </div>
                 

@@ -17,6 +17,10 @@ Route::post('/evenements/{event}/inscription', [EventController::class, 'registe
 
 Route::get('/galerie', function () {
     return view('gallery.index');
+})->name('gallery.index');
+
+Route::get('/galerie', function () {
+    return view('gallery.index');
 })->name('gallery');
 
 Route::get('/connexion', function () {
