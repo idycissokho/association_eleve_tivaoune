@@ -17,10 +17,10 @@
                     <span class="ml-3 text-xl font-bold text-blue-900">AELT 93-97</span>
                 </div>
                 <div class="hidden md:flex space-x-8">
-                    <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">Accueil</a>
-                    <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">À propos</a>
-                    <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">Actualités</a>
-                    <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">Événements</a>
+                    <a href="{{ route('home') }}" class="text-gray-700 hover:text-blue-600 font-medium">Accueil</a>
+                    <a href="{{ route('about') }}" class="text-gray-700 hover:text-blue-600 font-medium">À propos</a>
+                    <a href="{{ route('posts.index') }}" class="text-gray-700 hover:text-blue-600 font-medium">Actualités</a>
+                    <a href="{{ route('events.index') }}" class="text-gray-700 hover:text-blue-600 font-medium">Événements</a>
                     <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">Galerie</a>
                 </div>
                 <div class="flex items-center space-x-4">
@@ -124,10 +124,10 @@
                 <div>
                     <h3 class="text-lg font-semibold mb-4">Navigation</h3>
                     <ul class="space-y-2 text-gray-400">
-                        <li><a href="#" class="hover:text-white">Accueil</a></li>
-                        <li><a href="#" class="hover:text-white">À propos</a></li>
-                        <li><a href="#" class="hover:text-white">Actualités</a></li>
-                        <li><a href="#" class="hover:text-white">Événements</a></li>
+                        <li><a href="{{ route('home') }}" class="hover:text-white">Accueil</a></li>
+                        <li><a href="{{ route('about') }}" class="hover:text-white">À propos</a></li>
+                        <li><a href="{{ route('posts.index') }}" class="hover:text-white">Actualités</a></li>
+                        <li><a href="{{ route('events.index') }}" class="hover:text-white">Événements</a></li>
                     </ul>
                 </div>
                 
