@@ -51,6 +51,13 @@
                 <a href="{{ route('about') }}" class="block py-2">A propos</a>
                 <a href="{{ route('posts.index') }}" class="block py-2">Actualites</a>
                 <a href="/galerie" class="block py-2">Galerie</a>
+                <hr class="my-3">
+                <a href="/connexion" class="block py-2 text-blue-600 font-medium">
+                    <i class="fas fa-sign-in-alt mr-2"></i>Connexion
+                </a>
+                <a href="/inscription" class="block py-2 bg-blue-600 text-white rounded-lg px-4 text-center font-medium">
+                    <i class="fas fa-user-plus mr-2"></i>Adherer
+                </a>
             </div>
         </div>
     </nav>
