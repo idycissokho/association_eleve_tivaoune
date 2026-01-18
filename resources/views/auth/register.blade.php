@@ -14,103 +14,118 @@
                 <p class="text-gray-600">Devenez membre de l'AELT 93-97</p>
             </div>
 
-            <form class="space-y-6">
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Prenom</label>
-                        <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent" placeholder="Votre prenom" required>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Nom</label>
-                        <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent" placeholder="Votre nom" required>
-                    </div>
+            @if(session('success'))
+                <div class="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <form method="POST" action="{{ route('register') }}" class="space-y-6">
+                @csrf
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Nom complet *</label>
+                    <input type="text" name="name" value="{{ old('name') }}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent" placeholder="Votre nom complet" required>
+                    @error('name')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Adresse email</label>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Adresse email *</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                             <i class="fas fa-envelope text-gray-400"></i>
                         </div>
-                        <input type="email" class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent" placeholder="votre@email.com" required>
+                        <input type="email" name="email" value="{{ old('email') }}" class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent" placeholder="votre@email.com" required>
                     </div>
+                    @error('email')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Telephone</label>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Téléphone</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                             <i class="fas fa-phone text-gray-400"></i>
                         </div>
-                        <input type="tel" class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent" placeholder="+221 77 123 45 67" required>
+                        <input type="tel" name="phone" value="{{ old('phone') }}" class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent" placeholder="+221 77 123 45 67">
                     </div>
+                    @error('phone')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div class="grid md:grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Annee de promotion</label>
-                        <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
-                            <option value="">Selectionnez</option>
-                            <option value="1993">1993</option>
-                            <option value="1994">1994</option>
-                            <option value="1995">1995</option>
-                            <option value="1996">1996</option>
-                            <option value="1997">1997</option>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Année de promotion *</label>
+                        <select name="promotion_year" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
+                            <option value="">Sélectionnez</option>
+                            @for($year = 1990; $year <= 2030; $year++)
+                                <option value="{{ $year }}" {{ old('promotion_year') == $year ? 'selected' : '' }}>{{ $year }}</option>
+                            @endfor
                         </select>
+                        @error('promotion_year')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Pays de residence</label>
-                        <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
-                            <option value="">Selectionnez</option>
-                            <option value="senegal">Senegal</option>
-                            <option value="france">France</option>
-                            <option value="usa">Etats-Unis</option>
-                            <option value="canada">Canada</option>
-                            <option value="autre">Autre</option>
-                        </select>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Localisation actuelle</label>
+                        <input type="text" name="current_location" value="{{ old('current_location') }}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent" placeholder="Ville, Pays">
+                        @error('current_location')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Profession</label>
-                    <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent" placeholder="Votre profession">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Profession actuelle</label>
+                    <input type="text" name="current_profession" value="{{ old('current_profession') }}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent" placeholder="Votre profession">
+                    @error('current_profession')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Présentation (optionnel)</label>
+                    <textarea name="bio" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent" placeholder="Parlez-nous de vous...">{{ old('bio') }}</textarea>
+                    @error('bio')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div class="grid md:grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Mot de passe</label>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Mot de passe *</label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                 <i class="fas fa-lock text-gray-400"></i>
                             </div>
-                            <input type="password" class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent" placeholder="••••••••" required>
+                            <input type="password" name="password" class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent" placeholder="••••••••" required>
                         </div>
+                        @error('password')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Confirmer mot de passe</label>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Confirmer mot de passe *</label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                 <i class="fas fa-lock text-gray-400"></i>
                             </div>
-                            <input type="password" class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent" placeholder="••••••••" required>
+                            <input type="password" name="password_confirmation" class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent" placeholder="••••••••" required>
                         </div>
                     </div>
-                </div>
-
-                <div class="flex items-start">
-                    <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 mt-1" required>
-                    <label class="ml-3 text-sm text-gray-600">
-                        J'accepte les <a href="#" class="text-blue-600 hover:text-blue-800 font-semibold">conditions d'utilisation</a> et la <a href="#" class="text-blue-600 hover:text-blue-800 font-semibold">politique de confidentialite</a>
-                    </label>
                 </div>
 
                 <button type="submit" class="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-blue-900 font-bold py-4 rounded-lg hover:from-yellow-300 hover:to-yellow-400 transition-all shadow-lg hover:shadow-xl">
-                    <i class="fas fa-user-plus mr-2"></i>Creer mon compte
+                    <i class="fas fa-user-plus mr-2"></i>Créer mon compte
                 </button>
             </form>
 
             <div class="mt-8 text-center">
-                <p class="text-gray-600">Deja membre? <a href="/connexion" class="text-blue-600 hover:text-blue-800 font-semibold">Connectez-vous</a></p>
+                <p class="text-gray-600">Déjà membre? <a href="{{ route('login') }}" class="text-blue-600 hover:text-blue-800 font-semibold">Connectez-vous</a></p>
             </div>
         </div>
     </div>
