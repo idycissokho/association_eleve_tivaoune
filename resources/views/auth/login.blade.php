@@ -56,9 +56,9 @@
                     </label>
                 </div>
 
-                <!-- <button type="submit" class="w-full bg-gradient-to-r from-blue-900 to-blue-800 text-white font-bold py-4 rounded-lg hover:from-blue-800 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl">
+                <button type="submit" class="w-full bg-gradient-to-r from-blue-900 to-blue-800 text-white font-bold py-4 rounded-lg hover:from-blue-800 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl">
                     <i class="fas fa-sign-in-alt mr-2"></i>Se connecter
-                </button> -->
+                </button>
             </form>
 
             <div class="mt-8 text-center">
