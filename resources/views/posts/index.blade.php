@@ -49,12 +49,15 @@
             <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
                 Nos <span class="text-blue-600">Dernières Nouvelles</span>
             </h2>
-            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            <!-- <p class="text-xl text-gray-600 max-w-3xl mx-auto">
                 Suivez l'actualité de notre association et les projets qui nous tiennent à cœur
+            </p> -->
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                cette page est en cours de développement.
             </p>
         </div>
         
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {{-- Article 1 --}}
             <article class="bg-white rounded-2xl overflow-hidden shadow-lg article-card fade-in-up">
                 <div class="h-64 overflow-hidden">
@@ -211,7 +214,7 @@
                     Suivant →
                 </button>
             </div>
-        </div>
+        </div> -->
     </div>
 </section>
 
