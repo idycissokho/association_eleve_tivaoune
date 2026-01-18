@@ -119,9 +119,9 @@
                     </div>
                 </div>
 
-                <!-- <button type="submit" class="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-blue-900 font-bold py-4 rounded-lg hover:from-yellow-300 hover:to-yellow-400 transition-all shadow-lg hover:shadow-xl">
+                <button type="submit" class="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-blue-900 font-bold py-4 rounded-lg hover:from-yellow-300 hover:to-yellow-400 transition-all shadow-lg hover:shadow-xl">
                     <i class="fas fa-user-plus mr-2"></i>Créer mon compte
-                </button> -->
+                </button>
             </form>
 
             <div class="mt-8 text-center">
