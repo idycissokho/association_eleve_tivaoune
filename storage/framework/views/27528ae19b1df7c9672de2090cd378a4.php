@@ -98,7 +98,7 @@
                         <li><i class="fas fa-envelope text-yellow-400 mr-3"></i>faltapha@hotmail.com</li>
                         <li><i class="fas fa-envelope text-yellow-400 mr-3"></i>generation9396@gmail.com</li>
                         <li><i class="fas fa-envelope text-yellow-400 mr-3"></i>mndong2003@yahoo.fr</li>
-                        <!-- <li><i class="fas fa-phone text-yellow-400 mr-3"></i>+221 77 123 45 67</li> -->
+                        <li><i class="fas fa-phone text-yellow-400 mr-3"></i>+221 77 619 15 49</li>
                         <li><i class="fas fa-map-marker-alt text-yellow-400 mr-3"></i>Tivaouane, Senegal</li>
                     </ul>
                 </div>

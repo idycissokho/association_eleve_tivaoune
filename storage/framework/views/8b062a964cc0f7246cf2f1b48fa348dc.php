@@ -63,15 +63,15 @@
                         commune de maintenir et renforcer les liens tissés durant nos années de formation.
                     </p>
                     <p class="hover-lift">
-                        Notre lycée, symbole d'excellence éducative au Sénégal, nous a forgés et nous 
+                        Notre lycée, symbole d'excellence éducative au Sénégal, nous a forgé et nous 
                         a transmis des valeurs qui nous unissent encore aujourd'hui. Cette association 
                         est née du désir de <strong class="text-yellow-600">réunir tous les anciens élèves</strong> 
-                        de notre promotion pour créer un réseau solidaire et dynamique.
+                        de notre promotion pour créer un réseau solidaire et dynamique, afin de venir en aide aux élèves actuels.
                     </p>
                     <p class="hover-lift">
                         Depuis sa création, notre association rassemble des membres venus des quatre 
-                        coins du monde, unis par cette expérience commune qui a marqué notre jeunesse 
-                        et façonné notre avenir.
+                        coins du monde, unis par cette expérience commune qui a marquée notre jeunesse 
+                        et façonnée notre avenir.
                     </p>
                 </div>
             </div>
