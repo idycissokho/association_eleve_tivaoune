@@ -4,6 +4,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\GalleryController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -16,13 +17,7 @@ Route::get('/evenements', [EventController::class, 'index'])->name('events.index
 Route::get('/evenements/{event}', [EventController::class, 'show'])->name('events.show');
 Route::post('/evenements/{event}/inscription', [EventController::class, 'register'])->name('events.register');
 
-Route::get('/galerie', function () {
-    return view('gallery.index');
-})->name('gallery.index');
-
-Route::get('/galerie', function () {
-    return view('gallery.index');
-})->name('gallery');
+Route::get('/galerie', [GalleryController::class, 'index'])->name('gallery.index');
 
 // Routes d'authentification
 Route::get('/inscription', [AuthController::class, 'showRegister'])->name('register');
