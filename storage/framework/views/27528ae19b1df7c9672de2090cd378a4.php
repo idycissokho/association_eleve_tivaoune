@@ -95,8 +95,10 @@
                 <div>
                     <h3 class="text-lg font-bold mb-6 text-yellow-400">Contact</h3>
                     <ul class="space-y-4">
-                        <li><i class="fas fa-envelope text-yellow-400 mr-3"></i>contact@aelt93-97.org</li>
-                        <li><i class="fas fa-phone text-yellow-400 mr-3"></i>+221 77 123 45 67</li>
+                        <li><i class="fas fa-envelope text-yellow-400 mr-3"></i>faltapha@hotmail.com</li>
+                        <li><i class="fas fa-envelope text-yellow-400 mr-3"></i>generation9396@gmail.com</li>
+                        <li><i class="fas fa-envelope text-yellow-400 mr-3"></i>mndong2003@yahoo.fr</li>
+                        <!-- <li><i class="fas fa-phone text-yellow-400 mr-3"></i>+221 77 123 45 67</li> -->
                         <li><i class="fas fa-map-marker-alt text-yellow-400 mr-3"></i>Tivaouane, Senegal</li>
                     </ul>
                 </div>

@@ -1,3 +1,6 @@
+cp -r public/images/* ../images/
+
+
 # DEMO READY - AUCUN PROBLEME DE BASE DE DONNEES
 
 ## ✅ Configuration Complete pour Demo AWS
