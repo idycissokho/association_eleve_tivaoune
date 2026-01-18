@@ -91,7 +91,7 @@
                             ont été transmises au Lycée de Tivaouane."
                         </p>
                         <div class="flex items-center">
-                            <img src="{{ asset('images/president.jpg') }}" alt="Président" class="w-16 h-16 rounded-full mr-4">
+                            <img src="{{ asset('images/presi.jpeg') }}" alt="Président" class="w-16 h-16 rounded-full mr-4">
                             <div>
                                 <div class="font-semibold">Amadou DIALLO</div>
                                 <div class="text-blue-200 text-sm">Président de l'Association</div>

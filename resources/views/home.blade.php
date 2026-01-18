@@ -113,6 +113,11 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 rounded-3xl overflow-hidden shadow-2xl">
             <div class="grid md:grid-cols-2 gap-0">
+                 <div class="relative h-96 md:h-auto">
+                    <div class="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-blue-600/20"></div>
+                    <img src="{{ asset('images/presi.jpeg') }}" alt="President" class="w-full h-full object-cover">
+
+                </div>
                 <div class="p-12 text-white flex flex-col justify-center">
                     <h2 class="text-3xl md:text-4xl font-bold mb-6">Message du President</h2>
                     <p class="text-blue-100 mb-6 leading-relaxed text-lg">
@@ -131,11 +136,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="relative h-96 md:h-auto">
-                    <div class="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-blue-600/20"></div>
-                    <img src="{{ asset('images/directeur.jpeg') }}" alt="President" class="w-full h-full object-cover">
-
-                </div>
+               
             </div>
         </div>
     </div>
