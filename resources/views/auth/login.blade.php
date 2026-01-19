@@ -20,6 +20,14 @@
                 </div>
             @endif
 
+            @if($errors->any())
+                <div class="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+                    @foreach($errors->all() as $error)
+                        <p>{{ $error }}</p>
+                    @endforeach
+                </div>
+            @endif
+
             <form method="POST" action="{{ route('login') }}" class="space-y-6">
                 @csrf
                 
@@ -31,9 +39,6 @@
                         </div>
                         <input type="email" name="email" value="{{ old('email') }}" class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent" placeholder="votre@email.com" required>
                     </div>
-                    @error('email')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
                 </div>
 
                 <div>
@@ -44,9 +49,6 @@
                         </div>
                         <input type="password" name="password" class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent" placeholder="••••••••" required>
                     </div>
-                    @error('password')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
                 </div>
 
                 <div class="flex items-center justify-between">

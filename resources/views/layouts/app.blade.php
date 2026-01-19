@@ -3,12 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'AELT 93-97')</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="{{ asset('css/premium-design.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="bg-gray-50">
+    @if(session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Succès !',
+                text: '{{ session('success') }}',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        </script>
+    @endif
+
+    @if(session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Erreur !',
+                text: '{{ session('error') }}',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        </script>
+    @endif
     <nav class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-md shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
@@ -31,12 +56,24 @@
                 </div>
                 
                 <div class="hidden md:flex items-center space-x-4">
-                    <a href="/connexion" class="text-blue-600 hover:text-blue-800 font-medium">
-                        <i class="fas fa-sign-in-alt mr-2"></i>Connexion
-                    </a>
-                    <a href="/inscription" class="btn-primary">
-                        <i class="fas fa-user-plus mr-2"></i>Adherer
-                    </a>
+                    @auth
+                        <a href="{{ route('dashboard') }}" class="text-blue-600 hover:text-blue-800 font-medium">
+                            <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+                        </a>
+                        <form method="POST" action="{{ route('logout') }}" class="inline">
+                            @csrf
+                            <button type="submit" class="text-red-600 hover:text-red-800 font-medium">
+                                <i class="fas fa-sign-out-alt mr-2"></i>Déconnexion
+                            </button>
+                        </form>
+                    @else
+                        <a href="/connexion" class="text-blue-600 hover:text-blue-800 font-medium">
+                            <i class="fas fa-sign-in-alt mr-2"></i>Connexion
+                        </a>
+                        <a href="/inscription" class="btn-primary">
+                            <i class="fas fa-user-plus mr-2"></i>Adhérer
+                        </a>
+                    @endauth
                 </div>
                 
                 <button class="md:hidden text-gray-700" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">

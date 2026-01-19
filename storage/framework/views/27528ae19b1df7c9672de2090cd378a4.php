@@ -3,12 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
     <title><?php echo $__env->yieldContent('title', 'AELT 93-97'); ?></title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="<?php echo e(asset('css/premium-design.css')); ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="bg-gray-50">
+    <?php if(session('success')): ?>
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Succès !',
+                text: '<?php echo e(session('success')); ?>',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        </script>
+    <?php endif; ?>
+
+    <?php if(session('error')): ?>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Erreur !',
+                text: '<?php echo e(session('error')); ?>',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        </script>
+    <?php endif; ?>
     <nav class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-md shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
@@ -31,12 +56,24 @@
                 </div>
                 
                 <div class="hidden md:flex items-center space-x-4">
-                    <a href="/connexion" class="text-blue-600 hover:text-blue-800 font-medium">
-                        <i class="fas fa-sign-in-alt mr-2"></i>Connexion
-                    </a>
-                    <a href="/inscription" class="btn-primary">
-                        <i class="fas fa-user-plus mr-2"></i>Adherer
-                    </a>
+                    <?php if(auth()->guard()->check()): ?>
+                        <a href="<?php echo e(route('dashboard')); ?>" class="text-blue-600 hover:text-blue-800 font-medium">
+                            <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+                        </a>
+                        <form method="POST" action="<?php echo e(route('logout')); ?>" class="inline">
+                            <?php echo csrf_field(); ?>
+                            <button type="submit" class="text-red-600 hover:text-red-800 font-medium">
+                                <i class="fas fa-sign-out-alt mr-2"></i>Déconnexion
+                            </button>
+                        </form>
+                    <?php else: ?>
+                        <a href="/connexion" class="text-blue-600 hover:text-blue-800 font-medium">
+                            <i class="fas fa-sign-in-alt mr-2"></i>Connexion
+                        </a>
+                        <a href="/inscription" class="btn-primary">
+                            <i class="fas fa-user-plus mr-2"></i>Adhérer
+                        </a>
+                    <?php endif; ?>
                 </div>
                 
                 <button class="md:hidden text-gray-700" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
@@ -124,5 +161,4 @@
         </div>
     </footer>
 </body>
-</html>
-<?php /**PATH C:\Users\HP\association-tivaouane\resources\views/layouts/app.blade.php ENDPATH**/ ?>
+</html><?php /**PATH C:\Users\HP\association-tivaouane\resources\views/layouts/app.blade.php ENDPATH**/ ?>

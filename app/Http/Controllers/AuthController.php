@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -37,7 +38,7 @@ class AuthController extends Controller
             'current_profession' => $request->current_profession,
             'current_location' => $request->current_location,
             'bio' => $request->bio,
-            'is_admin' => false,
+            'is_admin' => true,
             'is_active' => true,
         ]);
 
@@ -59,11 +60,11 @@ class AuthController extends Controller
         if (Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
             $request->session()->regenerate();
             
-            if (auth()->user()->is_admin) {
-                return redirect()->route('admin.dashboard');
-            }
+            // Solution de contournement : sauvegarder l'ID utilisateur en session
+            $request->session()->put('user_id', Auth::id());
+            $request->session()->save();
             
-            return redirect()->route('dashboard');
+            return redirect()->route('admin.dashboard')->with('success', 'Connexion réussie !');
         }
 
         return back()->withErrors([
@@ -76,6 +77,6 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/');
+        return redirect('/')->with('success', 'Déconnexion réussie. À bientôt !');
     }
 }

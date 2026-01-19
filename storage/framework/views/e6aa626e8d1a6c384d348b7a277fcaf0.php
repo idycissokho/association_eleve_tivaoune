@@ -19,6 +19,14 @@
                 </div>
             <?php endif; ?>
 
+            <?php if($errors->any()): ?>
+                <div class="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+                    <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <p><?php echo e($error); ?></p>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </div>
+            <?php endif; ?>
+
             <form method="POST" action="<?php echo e(route('login')); ?>" class="space-y-6">
                 <?php echo csrf_field(); ?>
                 
@@ -30,16 +38,6 @@
                         </div>
                         <input type="email" name="email" value="<?php echo e(old('email')); ?>" class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent" placeholder="votre@email.com" required>
                     </div>
-                    <?php $__errorArgs = ['email'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                        <p class="text-red-500 text-xs mt-1"><?php echo e($message); ?></p>
-                    <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <div>
@@ -50,16 +48,6 @@ unset($__errorArgs, $__bag); ?>
                         </div>
                         <input type="password" name="password" class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent" placeholder="••••••••" required>
                     </div>
-                    <?php $__errorArgs = ['password'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                        <p class="text-red-500 text-xs mt-1"><?php echo e($message); ?></p>
-                    <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <div class="flex items-center justify-between">
@@ -69,9 +57,9 @@ unset($__errorArgs, $__bag); ?>
                     </label>
                 </div>
 
-                <!-- <button type="submit" class="w-full bg-gradient-to-r from-blue-900 to-blue-800 text-white font-bold py-4 rounded-lg hover:from-blue-800 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl">
+                <button type="submit" class="w-full bg-gradient-to-r from-blue-900 to-blue-800 text-white font-bold py-4 rounded-lg hover:from-blue-800 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl">
                     <i class="fas fa-sign-in-alt mr-2"></i>Se connecter
-                </button> -->
+                </button>
             </form>
 
             <div class="mt-8 text-center">
@@ -81,5 +69,4 @@ unset($__errorArgs, $__bag); ?>
     </div>
 </section>
 <?php $__env->stopSection(); ?>
-
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\HP\association-tivaouane\resources\views/auth/login.blade.php ENDPATH**/ ?>
