@@ -45,6 +45,6 @@ class MemberController extends Controller
             \Log::error('Erreur envoi email: ' . $e->getMessage());
         }
 
-        return redirect()->route('admin.dashboard')->with('success', 'Membre créé avec succès ! Un email de bienvenue a été envoyé. 🎉');
+        return redirect()->route('dashboard')->with('success', 'Membre créé avec succès ! Un email de bienvenue a été envoyé. 🎉');
     }
 }

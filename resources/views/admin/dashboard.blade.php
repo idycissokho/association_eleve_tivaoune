@@ -2,6 +2,105 @@
 
 @section('title', 'Admin Dashboard - AELT 93-97')
 
+@section('head')
+<style>
+/* Premium Form Styles */
+.form-group {
+    position: relative;
+}
+
+.form-group input:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
+.role-card .role-option {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.role-card:hover .role-option {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.role-card input:checked + .role-option {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Animations */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#add-member-form {
+    animation: slideIn 0.5s ease-out;
+}
+
+/* Hover effects */
+.hover-lift {
+    transition: transform 0.2s ease-in-out;
+}
+
+.hover-lift:hover {
+    transform: translateY(-2px);
+}
+
+/* Card premium styling */
+.card-premium {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* Gold background */
+.gold-bg {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+/* Input focus states */
+input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Button hover effects */
+button {
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    transform: translateY(-1px);
+}
+
+/* Success/Error states */
+.border-green-300 {
+    border-color: #86efac;
+}
+
+.bg-green-50 {
+    background-color: #f0fdf4;
+}
+
+.border-red-300 {
+    border-color: #fca5a5;
+}
+
+.bg-red-50 {
+    background-color: #fef2f2;
+}
+</style>
+@endsection
+
 @section('content')
 @auth
 <!-- Dashboard Content -->
@@ -145,57 +244,186 @@
         </div>
     </div>
 
-    <!-- Add Member Form -->
+    <!-- Add Member Form (Hidden by default) -->
     <div id="add-member-form" class="card-premium rounded-2xl p-8 mb-8" style="display: none;">
-        <h2 class="text-xl font-bold text-gray-900 mb-6">Ajouter un nouveau membre</h2>
-        
-        <form method="POST" action="{{ route('admin.members.store') }}" class="space-y-6">
+        <!-- Header with gradient background -->
+        <div class="bg-gradient-to-r from-blue-600 to-amber-600 -m-8 mb-8 p-8 rounded-t-2xl">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-white mb-2">
+                        <i class="fas fa-user-plus mr-3"></i>Ajouter un nouveau membre
+                    </h2>
+                    <p class="text-blue-100">Créez un compte pour un nouveau membre de l'association</p>
+                </div>
+                <button onclick="toggleAddMemberForm()" class="bg-white/20 hover:bg-white/30 text-white p-3 rounded-xl transition-all">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <form action="{{ route('admin.members.store') }}" method="POST" class="space-y-6">
             @csrf
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="form-group">
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Prénom *</label>
-                    <input type="text" name="first_name" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" placeholder="Prénom du membre">
-                </div>
-                <div class="form-group">
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Nom *</label>
-                    <input type="text" name="last_name" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" placeholder="Nom du membre">
+            <!-- Personal Information Section -->
+            <div class="bg-gray-50 rounded-xl p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <i class="fas fa-user text-blue-600 mr-2"></i>
+                    Informations personnelles
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- First Name -->
+                    <div class="form-group">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            Prénom <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <input type="text" name="first_name" required 
+                                   class="w-full px-4 py-3 pl-12 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white shadow-sm hover:shadow-md"
+                                   placeholder="Entrez le prénom">
+                            <i class="fas fa-user absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                    </div>
+
+                    <!-- Last Name -->
+                    <div class="form-group">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            Nom de famille <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <input type="text" name="last_name" required 
+                                   class="w-full px-4 py-3 pl-12 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white shadow-sm hover:shadow-md"
+                                   placeholder="Entrez le nom de famille">
+                            <i class="fas fa-user-tag absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
-            <div class="form-group">
-                <label class="block text-sm font-semibold text-gray-700 mb-2">Email *</label>
-                <input type="email" name="email" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" placeholder="email@exemple.com">
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="form-group">
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Mot de passe *</label>
-                    <input type="password" name="password" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" placeholder="••••••••">
+
+            <!-- Account Information Section -->
+            <div class="bg-gray-50 rounded-xl p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <i class="fas fa-envelope text-amber-600 mr-2"></i>
+                    Informations de compte
+                </h3>
+                
+                <div class="space-y-6">
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            Adresse email <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <input type="email" name="email" required 
+                                   class="w-full px-4 py-3 pl-12 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white shadow-sm hover:shadow-md"
+                                   placeholder="exemple@email.com">
+                            <i class="fas fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Un email de bienvenue sera envoyé à cette adresse</p>
+                    </div>
+
+                    <!-- Password Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Password -->
+                        <div class="form-group">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                Mot de passe <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <input type="password" name="password" required 
+                                       class="w-full px-4 py-3 pl-12 pr-12 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white shadow-sm hover:shadow-md"
+                                       placeholder="Minimum 8 caractères">
+                                <i class="fas fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                <button type="button" onclick="togglePassword('password')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                    <i class="fas fa-eye" id="password-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Confirm Password -->
+                        <div class="form-group">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                Confirmer le mot de passe <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <input type="password" name="password_confirmation" required 
+                                       class="w-full px-4 py-3 pl-12 pr-12 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white shadow-sm hover:shadow-md"
+                                       placeholder="Répétez le mot de passe">
+                                <i class="fas fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                <button type="button" onclick="togglePassword('password_confirmation')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                    <i class="fas fa-eye" id="password_confirmation-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
+
+            <!-- Role Selection Section -->
+            <div class="bg-gray-50 rounded-xl p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <i class="fas fa-crown text-amber-600 mr-2"></i>
+                    Rôle dans l'association
+                </h3>
+                
                 <div class="form-group">
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Confirmer mot de passe *</label>
-                    <input type="password" name="password_confirmation" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" placeholder="••••••••">
+                    <label class="block text-sm font-semibold text-gray-700 mb-3">
+                        Sélectionner un rôle <span class="text-red-500">*</span>
+                    </label>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <!-- Membre -->
+                        <label class="role-card cursor-pointer">
+                            <input type="radio" name="role" value="membre" class="hidden" required>
+                            <div class="role-option border-2 border-gray-200 rounded-xl p-4 text-center transition-all hover:border-blue-300 hover:shadow-md">
+                                <i class="fas fa-user text-2xl text-blue-600 mb-2"></i>
+                                <p class="font-semibold text-gray-900">Membre</p>
+                                <p class="text-xs text-gray-500">Accès standard</p>
+                            </div>
+                        </label>
+
+                        <!-- Secrétaire -->
+                        <label class="role-card cursor-pointer">
+                            <input type="radio" name="role" value="secretaire" class="hidden">
+                            <div class="role-option border-2 border-gray-200 rounded-xl p-4 text-center transition-all hover:border-green-300 hover:shadow-md">
+                                <i class="fas fa-pen text-2xl text-green-600 mb-2"></i>
+                                <p class="font-semibold text-gray-900">Secrétaire</p>
+                                <p class="text-xs text-gray-500">Gestion documents</p>
+                            </div>
+                        </label>
+
+                        <!-- Trésorier -->
+                        <label class="role-card cursor-pointer">
+                            <input type="radio" name="role" value="tresorier" class="hidden">
+                            <div class="role-option border-2 border-gray-200 rounded-xl p-4 text-center transition-all hover:border-amber-300 hover:shadow-md">
+                                <i class="fas fa-coins text-2xl text-amber-600 mb-2"></i>
+                                <p class="font-semibold text-gray-900">Trésorier</p>
+                                <p class="text-xs text-gray-500">Gestion finances</p>
+                            </div>
+                        </label>
+
+                        <!-- Président -->
+                        <label class="role-card cursor-pointer">
+                            <input type="radio" name="role" value="president" class="hidden">
+                            <div class="role-option border-2 border-gray-200 rounded-xl p-4 text-center transition-all hover:border-purple-300 hover:shadow-md">
+                                <i class="fas fa-crown text-2xl text-purple-600 mb-2"></i>
+                                <p class="font-semibold text-gray-900">Président</p>
+                                <p class="text-xs text-gray-500">Accès complet</p>
+                            </div>
+                        </label>
+                    </div>
                 </div>
             </div>
-            
-            <div class="form-group">
-                <label class="block text-sm font-semibold text-gray-700 mb-2">Rôle *</label>
-                <select name="role" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                    <option value="">Sélectionner un rôle</option>
-                    <option value="membre">Membre</option>
-                    <option value="secretaire">Secrétaire</option>
-                    <option value="tresorier">Trésorier</option>
-                    <option value="president">Président</option>
-                </select>
-            </div>
-            
-            <div class="flex justify-end space-x-4">
-                <button type="button" onclick="toggleAddMemberForm()" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all">
-                    Annuler
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 pt-6">
+                <button type="button" onclick="toggleAddMemberForm()" 
+                        class="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all font-semibold">
+                    <i class="fas fa-times mr-2"></i>Annuler
                 </button>
-                <button type="submit" class="px-8 py-3 bg-gradient-to-r from-blue-600 to-amber-600 text-white rounded-xl hover:shadow-lg transition-all">
-                    <i class="fas fa-save mr-2"></i>Ajouter le membre
+                <button type="submit" 
+                        class="flex-1 px-8 py-3 bg-gradient-to-r from-blue-600 to-amber-600 text-white rounded-xl hover:from-blue-700 hover:to-amber-700 hover:shadow-lg transition-all font-semibold transform hover:scale-105">
+                    <i class="fas fa-user-plus mr-2"></i>Créer le membre
                 </button>
             </div>
         </form>
@@ -384,6 +612,106 @@ function hideAllSections() {
     });
 }
 
+// Toggle Add Member Form - Version simplifiée
+function toggleAddMemberForm() {
+    console.log('toggleAddMemberForm called');
+    
+    const form = document.getElementById('add-member-form');
+    const list = document.getElementById('members-list');
+    
+    console.log('Form found:', !!form);
+    console.log('List found:', !!list);
+    
+    if (form && list) {
+        const isFormHidden = form.style.display === 'none' || !form.style.display;
+        console.log('Form is hidden:', isFormHidden);
+        
+        if (isFormHidden) {
+            form.style.display = 'block';
+            list.style.display = 'none';
+            console.log('Showing form, hiding list');
+        } else {
+            form.style.display = 'none';
+            list.style.display = 'block';
+            console.log('Hiding form, showing list');
+        }
+    } else {
+        console.error('Form or list element not found!');
+    }
+}
+
+// Toggle Password Visibility
+function togglePassword(fieldName) {
+    const field = document.querySelector(`input[name="${fieldName}"]`);
+    const eye = document.getElementById(`${fieldName}-eye`);
+    
+    if (field.type === 'password') {
+        field.type = 'text';
+        eye.classList.remove('fa-eye');
+        eye.classList.add('fa-eye-slash');
+    } else {
+        field.type = 'password';
+        eye.classList.remove('fa-eye-slash');
+        eye.classList.add('fa-eye');
+    }
+}
+
+// Role Selection Handler
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle role selection
+    const roleCards = document.querySelectorAll('.role-card');
+    roleCards.forEach(card => {
+        card.addEventListener('click', function() {
+            // Remove active class from all cards
+            roleCards.forEach(c => {
+                const option = c.querySelector('.role-option');
+                option.classList.remove('border-blue-500', 'bg-blue-50', 'border-green-500', 'bg-green-50', 'border-amber-500', 'bg-amber-50', 'border-purple-500', 'bg-purple-50');
+                option.classList.add('border-gray-200');
+            });
+            
+            // Add active class to selected card
+            const option = this.querySelector('.role-option');
+            const role = this.querySelector('input[name="role"]').value;
+            
+            switch(role) {
+                case 'membre':
+                    option.classList.add('border-blue-500', 'bg-blue-50');
+                    break;
+                case 'secretaire':
+                    option.classList.add('border-green-500', 'bg-green-50');
+                    break;
+                case 'tresorier':
+                    option.classList.add('border-amber-500', 'bg-amber-50');
+                    break;
+                case 'president':
+                    option.classList.add('border-purple-500', 'bg-purple-50');
+                    break;
+            }
+            
+            option.classList.remove('border-gray-200');
+        });
+    });
+    
+    // Form validation feedback
+    const inputs = document.querySelectorAll('input[required]');
+    inputs.forEach(input => {
+        input.addEventListener('blur', function() {
+            if (this.value.trim() === '') {
+                this.classList.add('border-red-300', 'bg-red-50');
+                this.classList.remove('border-gray-200');
+            } else {
+                this.classList.remove('border-red-300', 'bg-red-50');
+                this.classList.add('border-green-300', 'bg-green-50');
+            }
+        });
+        
+        input.addEventListener('focus', function() {
+            this.classList.remove('border-red-300', 'bg-red-50', 'border-green-300', 'bg-green-50');
+            this.classList.add('border-blue-300');
+        });
+    });
+});
+
 function showActualitesSection() {
     hideAllSections();
     document.getElementById('actualites-content').style.display = 'block';
@@ -407,11 +735,6 @@ function toggleActualiteForm() {
         list.style.display = 'block';
     }
 }
-
-// Gestion upload image avec nommage automatique
-
-
-
 
 function editActualite(id) {
     Swal.fire({
@@ -514,6 +837,10 @@ function showGallerySection() {
 function showMembersSection() {
     hideAllSections();
     document.getElementById('members-content').style.display = 'block';
+    
+    // Debug: vérifier que les éléments existent
+    console.log('Form element:', document.getElementById('add-member-form'));
+    console.log('List element:', document.getElementById('members-list'));
 }
 
 function showActualitesSection() {
@@ -534,18 +861,6 @@ function toggleActualiteForm() {
         form.style.display = 'block';
         list.style.display = 'none';
         form.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } else {
-        form.style.display = 'none';
-        list.style.display = 'block';
-    }
-}
-
-function toggleAddMemberForm() {
-    const form = document.getElementById('add-member-form');
-    const list = document.getElementById('members-list');
-    if (form.style.display === 'none') {
-        form.style.display = 'block';
-        list.style.display = 'none';
     } else {
         form.style.display = 'none';
         list.style.display = 'block';
@@ -669,6 +984,28 @@ function filterArticles() {
         }
     });
 }
+// Delete image
+function deleteImage(filename) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette image ?')) {
+        fetch('{{ route("admin.gallery.delete") }}', {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ filename: filename })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            }
+        });
+    }
+}
+
+// Load page function
+function loadPage(page) {
     fetch(`{{ route('admin.gallery.images') }}?page=${page}`)
         .then(response => response.json())
         .then(data => {
@@ -704,26 +1041,6 @@ function filterArticles() {
                 btn.className = `px-3 py-2 rounded-lg ${index + 1 === data.current_page ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`;
             });
         });
-}
-
-// Delete image
-function deleteImage(filename) {
-    if (confirm('Êtes-vous sûr de vouloir supprimer cette image ?')) {
-        fetch('{{ route("admin.gallery.delete") }}', {
-            method: 'DELETE',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ filename: filename })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                location.reload();
-            }
-        });
-    }
 }
 </script>
 

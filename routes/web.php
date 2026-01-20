@@ -42,7 +42,16 @@ Route::get('/dashboard', function () {
         return redirect()->route('login');
     }
     
-    return view('admin.dashboard');
+    // Récupérer les posts pour la vue
+    $posts = [];
+    try {
+        $posts = \App\Models\Post::latest()->get();
+    } catch (\Exception $e) {
+        // Si pas de table posts, on utilise une collection vide
+        $posts = collect();
+    }
+    
+    return view('admin.dashboard', compact('posts'));
 })->name('dashboard');
 
 Route::get('/admin/dashboard', [PostController::class, 'adminIndex'])->name('admin.dashboard');
