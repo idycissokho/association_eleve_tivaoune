@@ -429,54 +429,217 @@ button:hover {
         </form>
     </div>
 
-    <!-- Members List -->
-    <div id="members-list" class="card-premium rounded-2xl p-8">
-        <div class="flex items-center justify-between mb-6">
-            <h2 class="text-xl font-bold text-gray-900">Liste des Membres</h2>
-            <button onclick="toggleAddMemberForm()" class="bg-gradient-to-r from-blue-600 to-amber-600 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all">
-                <i class="fas fa-plus mr-2"></i>Ajouter un membre
-            </button>
+    <!-- Members List Premium -->
+    <div id="members-list" class="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
+        <!-- Header Premium -->
+        <div class="bg-gradient-to-r from-slate-50 to-blue-50 px-8 py-6 border-b border-gray-100">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-gradient-to-r from-blue-600 to-amber-600 rounded-2xl flex items-center justify-center">
+                        <i class="fas fa-users text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900">Membres</h2>
+                        <p class="text-sm text-gray-600">{{ \App\Models\User::count() }} membres actifs</p>
+                    </div>
+                </div>
+                <button onclick="toggleAddMemberForm()" class="bg-gradient-to-r from-blue-600 to-amber-600 hover:from-blue-700 hover:to-amber-700 text-white px-6 py-3 rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
+                    <i class="fas fa-plus mr-2"></i>Nouveau membre
+                </button>
+            </div>
         </div>
         
-        <!-- Search Bar -->
-        <div class="mb-6">
-            <input type="text" id="memberSearch" placeholder="Rechercher un membre..." class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+        <!-- Search & Filters Premium -->
+        <div class="px-8 py-6 bg-gray-50/50">
+            <div class="flex flex-col lg:flex-row gap-4">
+                <div class="flex-1 relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <i class="fas fa-search text-gray-400"></i>
+                    </div>
+                    <input type="text" id="memberSearch" oninput="filterMembers()" placeholder="Rechercher par nom, email, profession..." class="w-full pl-12 pr-4 py-4 bg-white border border-gray-200 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all shadow-sm">
+                </div>
+                <div class="flex gap-3">
+                    <select id="roleFilter" onchange="filterMembers()" class="px-4 py-4 bg-white border border-gray-200 rounded-2xl focus:ring-2 focus:ring-blue-500 transition-all">
+                        <option value="">Tous les rôles</option>
+                        <option value="admin">Admins</option>
+                        <option value="member">Membres</option>
+                    </select>
+                    <select id="statusFilter" onchange="filterMembers()" class="px-4 py-4 bg-white border border-gray-200 rounded-2xl focus:ring-2 focus:ring-blue-500 transition-all">
+                        <option value="">Tous les statuts</option>
+                        <option value="active">Actifs</option>
+                        <option value="inactive">Inactifs</option>
+                    </select>
+                </div>
+            </div>
         </div>
         
+        <!-- Table Premium -->
         <div class="overflow-x-auto">
             <table class="w-full">
-                <thead>
-                    <tr class="border-b border-gray-200">
-                        <th class="text-left py-3 px-4 font-semibold text-gray-700">Nom</th>
-                        <th class="text-left py-3 px-4 font-semibold text-gray-700">Email</th>
-                        <th class="text-left py-3 px-4 font-semibold text-gray-700">Rôle</th>
-                        <th class="text-left py-3 px-4 font-semibold text-gray-700">Statut</th>
-                        <th class="text-left py-3 px-4 font-semibold text-gray-700">Actions</th>
+                <thead class="bg-gray-50/80">
+                    <tr>
+                        <th class="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">Membre</th>
+                        <th class="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">Contact</th>
+                        <th class="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">Promotion</th>
+                        <th class="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">Profession</th>
+                        <th class="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">Rôle</th>
+                        <th class="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">Statut</th>
+                        <th class="text-right py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @foreach(\App\Models\User::all() as $user)
-                    <tr class="border-b border-gray-100 hover:bg-gray-50 transition-all">
-                        <td class="py-3 px-4">{{ $user->name }}</td>
-                        <td class="py-3 px-4">{{ $user->email }}</td>
-                        <td class="py-3 px-4">
-                            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">
-                                {{ $user->is_admin ? 'Admin' : 'Membre' }}
+                <tbody id="membersTableBody" class="divide-y divide-gray-100">
+                    @foreach(\App\Models\User::paginate(10) as $user)
+                    <tr class="hover:bg-blue-50/30 transition-all duration-200 member-row" data-name="{{ strtolower($user->name) }}" data-email="{{ strtolower($user->email) }}" data-profession="{{ strtolower($user->current_profession ?? '') }}" data-role="{{ $user->is_admin ? 'admin' : 'member' }}" data-status="{{ $user->is_active ? 'active' : 'inactive' }}">
+                        <td class="py-4 px-6">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                                    {{ strtoupper(substr($user->name, 0, 1)) }}
+                                </div>
+                                <div>
+                                    <div class="font-semibold text-gray-900">{{ $user->name }}</div>
+                                    <div class="text-sm text-gray-500">Membre depuis {{ $user->created_at->format('M Y') }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="py-4 px-6">
+                            <div class="text-sm">
+                                <div class="text-gray-900 font-medium">{{ $user->email }}</div>
+                                <div class="text-gray-500">{{ $user->phone ?? 'Non renseigné' }}</div>
+                            </div>
+                        </td>
+                        <td class="py-4 px-6">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800">
+                                {{ $user->promotion_year ?? '1993-1997' }}
                             </span>
                         </td>
-                        <td class="py-3 px-4">
-                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">
-                                {{ $user->is_active ? 'Actif' : 'Inactif' }}
-                            </span>
+                        <td class="py-4 px-6">
+                            <div class="text-sm text-gray-900">{{ $user->current_profession ?? 'Non renseigné' }}</div>
+                            <div class="text-xs text-gray-500">{{ $user->current_location ?? 'Localisation non renseignée' }}</div>
                         </td>
-                        <td class="py-3 px-4">
-                            <button class="text-blue-600 hover:text-blue-800 mr-2 transition-colors"><i class="fas fa-edit"></i></button>
-                            <button class="text-red-600 hover:text-red-800 transition-colors"><i class="fas fa-trash"></i></button>
+                        <td class="py-4 px-6">
+                            @if($user->is_admin)
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r from-purple-100 to-pink-100 text-purple-800 border border-purple-200">
+                                    <i class="fas fa-crown mr-1 text-xs"></i>Admin
+                                </span>
+                            @else
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200">
+                                    <i class="fas fa-user mr-1 text-xs"></i>Membre
+                                </span>
+                            @endif
+                        </td>
+                        <td class="py-4 px-6">
+                            @if($user->is_active)
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 border border-green-200">
+                                    <div class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>Actif
+                                </span>
+                            @else
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800 border border-red-200">
+                                    <div class="w-2 h-2 bg-red-500 rounded-full mr-2"></div>Inactif
+                                </span>
+                            @endif
+                        </td>
+                        <td class="py-4 px-6 text-right">
+                            <div class="flex items-center justify-end space-x-2">
+                                <button onclick="viewMember({{ $user->id }})" class="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" title="Voir le profil">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                @if(auth()->user()->is_admin && $user->id !== auth()->id())
+                                <button onclick="editMember({{ $user->id }})" class="p-2 text-gray-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-all" title="Modifier">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button onclick="confirmDelete({{ $user->id }}, '{{ $user->name }}')" class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all" title="Supprimer">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                                @endif
+                            </div>
                         </td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
+        </div>
+        
+        <!-- Pagination Premium -->
+        <div class="bg-gray-50/50 px-8 py-4 border-t border-gray-100">
+            <div class="flex items-center justify-between">
+                <div class="text-sm text-gray-600">
+                    Affichage de 1 à {{ min(10, \App\Models\User::count()) }} sur {{ \App\Models\User::count() }} membres
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-all">
+                        Précédent
+                    </button>
+                    <button class="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-amber-600 rounded-lg hover:from-blue-700 hover:to-amber-700 transition-all">
+                        1
+                    </button>
+                    <button class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-all">
+                        Suivant
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit Member -->
+    <div id="editMemberModal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-2xl font-bold text-gray-900">Modifier le membre</h3>
+                    <button onclick="closeEditModal()" class="p-2 hover:bg-gray-100 rounded-full transition-all">
+                        <i class="fas fa-times text-gray-500"></i>
+                    </button>
+                </div>
+                <form id="editMemberForm" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Nom complet</label>
+                            <input type="text" id="editName" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
+                            <input type="email" id="editEmail" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Téléphone</label>
+                            <input type="tel" id="editPhone" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Profession</label>
+                            <input type="text" id="editProfession" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all">
+                        </div>
+                    </div>
+                    <div class="flex justify-end space-x-4 pt-6">
+                        <button type="button" onclick="closeEditModal()" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all">
+                            Annuler
+                        </button>
+                        <button type="submit" class="px-8 py-3 bg-gradient-to-r from-blue-600 to-amber-600 text-white rounded-xl hover:from-blue-700 hover:to-amber-700 transition-all">
+                            Sauvegarder
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Delete Confirmation -->
+    <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full">
+            <div class="p-8 text-center">
+                <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-exclamation-triangle text-red-600 text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Confirmer la suppression</h3>
+                <p class="text-gray-600 mb-6">Êtes-vous sûr de vouloir supprimer <span id="deleteMemberName" class="font-semibold"></span> ? Cette action est irréversible.</p>
+                <div class="flex space-x-4">
+                    <button onclick="closeDeleteModal()" class="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all">
+                        Annuler
+                    </button>
+                    <button onclick="deleteMember()" class="flex-1 px-6 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-all">
+                        Supprimer
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -1354,3 +1517,5 @@ function loadPage(page) {
 </div>
 @endauth
 @endsection
+
+<script src="{{ asset('js/members-premium.js') }}"></script>
