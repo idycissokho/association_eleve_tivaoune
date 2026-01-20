@@ -7,235 +7,245 @@
     .fade-in-up { opacity: 0; transform: translateY(30px); animation: fadeInUp 0.8s ease-out forwards; }
     @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
     .hover-scale { transition: all 0.3s ease; }
-    .hover-scale:hover { transform: scale(1.05); }
-    .article-card { transition: all 0.4s ease; }
-    .article-card:hover { transform: translateY(-10px); box-shadow: 0 25px 50px rgba(0,0,0,0.15); }
-    .btn-read-more { background: linear-gradient(135deg, #d97706, #f59e0b); transition: all 0.3s ease; }
-    .btn-read-more:hover { background: linear-gradient(135deg, #b45309, #d97706); transform: translateY(-2px); }
+    .hover-scale:hover { transform: scale(1.02); }
+    .article-card { 
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        background: linear-gradient(145deg, #ffffff, #f8fafc);
+        border: 1px solid rgba(255,255,255,0.2);
+        backdrop-filter: blur(10px);
+    }
+    .article-card:hover { 
+        transform: translateY(-15px) scale(1.02); 
+        box-shadow: 0 40px 80px rgba(59, 130, 246, 0.15), 0 20px 40px rgba(0,0,0,0.1);
+        border-color: rgba(59, 130, 246, 0.2);
+    }
+    .btn-read-more { 
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8, #f59e0b); 
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    .btn-read-more:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: left 0.5s;
+    }
+    .btn-read-more:hover:before { left: 100%; }
+    .btn-read-more:hover { 
+        background: linear-gradient(135deg, #1d4ed8, #3b82f6, #d97706); 
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 15px 30px rgba(59, 130, 246, 0.4);
+    }
+    .hero-gradient {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .category-badge {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+    .glass-effect {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
 </style>
 
-{{-- Hero Section --}}
-<!-- <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-blue-900 via-indigo-900 to-purple-900">
-    <div class="absolute inset-0 opacity-30">
-        <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
-             alt="Paysage africain" class="w-full h-full object-cover">
+{{-- Hero Section Premium --}}
+<section class="relative min-h-[70vh] flex items-center justify-center overflow-hidden hero-gradient">
+    <div class="absolute inset-0">
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-900/80 via-purple-900/70 to-indigo-900/80"></div>
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.05\"%3E%3Ccircle cx=\"30\" cy=\"30\" r=\"2\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30"></div>
     </div>
     
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div class="inline-flex items-center px-6 py-3 rounded-full bg-amber-500/20 border border-amber-400/30 mb-8 fade-in-up">
-            <span class="text-amber-300 text-sm font-medium">✨ Restez connectés avec nous</span>
+        <div class="inline-flex items-center px-8 py-4 rounded-full glass-effect mb-8 fade-in-up">
+            <div class="w-3 h-3 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full mr-3 animate-pulse"></div>
+            <span class="text-gray-700 font-semibold">✨ Actualités en Direct</span>
         </div>
         
-        <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-8 leading-tight fade-in-up" style="animation-delay: 0.2s;">
-            Dernières 
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">
+        <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-8 leading-tight fade-in-up" style="animation-delay: 0.2s;">
+            Nos 
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-400 to-red-400">
                 Actualités
             </span>
-            <div class="text-3xl md:text-4xl lg:text-5xl mt-4 text-blue-200">
-                de l'Association
+            <div class="text-4xl md:text-5xl lg:text-6xl mt-4 text-blue-200 font-light">
+                Exclusives
             </div>
         </h1>
         
         <p class="text-xl md:text-2xl text-blue-100 mb-12 max-w-4xl mx-auto leading-relaxed fade-in-up" style="animation-delay: 0.4s;">
-            Découvrez les dernières nouvelles, événements et réalisations de notre communauté d'anciens élèves
+            Découvrez les dernières nouvelles, événements et réalisations de notre prestigieuse communauté
         </p>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center fade-in-up" style="animation-delay: 0.6s;">
+            <button class="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold rounded-2xl hover:shadow-2xl transition-all transform hover:scale-105">
+                📰 Toutes les Actualités
+            </button>
+            <button class="px-8 py-4 glass-effect text-gray-700 font-bold rounded-2xl hover:shadow-xl transition-all">
+                🔔 S'abonner aux Notifications
+            </button>
+        </div>
     </div>
-</section> -->
+</section>
 
-{{-- Section Articles Récents --}}
-<section class="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                Nos <span class="text-blue-600">Dernières Nouvelles</span>
+{{-- Section Articles Premium --}}
+<section class="py-24 bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 relative overflow-hidden">
+    <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\"100\" height=\"100\" viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"%23f3f4f6\" fill-opacity=\"0.3\"%3E%3Cpolygon points=\"50 0 60 40 100 50 60 60 50 100 40 60 0 50 40 40\"/%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="text-center mb-20">
+            <div class="inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-blue-100 to-purple-100 border border-blue-200 mb-6">
+                <span class="text-blue-700 font-semibold">📈 {{ \App\Models\Post::where('is_published', true)->count() }} Articles Publiés</span>
+            </div>
+            <h2 class="text-5xl md:text-6xl font-black text-gray-900 mb-8">
+                Dernières <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600">Nouvelles</span>
             </h2>
-            <!-- <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                Suivez l'actualité de notre association et les projets qui nous tiennent à cœur
-            </p> -->
-            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                cette page est en cours de développement.
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                Restez informés des derniers développements et initiatives de notre association
             </p>
         </div>
         
-        <!-- <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {{-- Article 1 --}}
-            <article class="bg-white rounded-2xl overflow-hidden shadow-lg article-card fade-in-up">
-                <div class="h-64 overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1547036967-23d11aacaee0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                         alt="École en Afrique" class="w-full h-full object-cover hover-scale">
-                </div>
-                <div class="p-6">
-                    <div class="flex items-center mb-4">
-                        <span class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs font-medium">ÉDUCATION</span>
-                        <span class="text-gray-500 text-sm ml-auto">15 Janvier 2024</span>
+        @if(\App\Models\Post::where('is_published', true)->count() > 0)
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+            @foreach(\App\Models\Post::where('is_published', true)->latest()->take(6)->get() as $index => $post)
+            <article class="article-card rounded-3xl overflow-hidden shadow-xl fade-in-up" style="animation-delay: {{ $index * 0.1 }}s;">
+                <div class="h-72 overflow-hidden relative">
+                    @php
+                        $imagePath = public_path('images/actualite' . ($index + 1) . '.jpg');
+                        $imageUrl = file_exists($imagePath) ? asset('images/actualite' . ($index + 1) . '.jpg') : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM2NjdlZWEiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM3NjRiYTIiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2cpIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0iI2ZmZmZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkFjdHVhbGl0w6k8L3RleHQ+PC9zdmc+';
+                    @endphp
+                    <img src="{{ $imageUrl }}" alt="{{ $post->title }}" class="w-full h-full object-cover hover-scale">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+                    <div class="absolute top-4 left-4">
+                        <span class="category-badge text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
+                            📰 ACTUALITÉ
+                        </span>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors">
-                        Nouveau Projet Éducatif à Tivaouane
+                    <div class="absolute bottom-4 right-4">
+                        <div class="glass-effect px-3 py-1 rounded-full">
+                            <span class="text-gray-700 text-sm font-semibold">{{ $post->created_at->format('d M Y') }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-8">
+                    <h3 class="text-2xl font-black text-gray-900 mb-4 hover:text-blue-600 transition-colors leading-tight">
+                        {{ $post->title }}
                     </h3>
-                    <p class="text-gray-600 mb-6 leading-relaxed">
-                        Lancement d'un ambitieux programme de bourses d'études pour soutenir 50 élèves méritants 
-                        du lycée de Tivaouane avec un budget de 25 millions FCFA.
+                    <p class="text-gray-600 mb-6 leading-relaxed text-lg">
+                        {{ $post->excerpt ?? Str::limit(strip_tags($post->content), 120) }}
                     </p>
-                    <button class="btn-read-more text-white px-6 py-3 rounded-full font-semibold shadow-lg">
-                        Lire la suite →
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
+                                <span class="text-white font-bold text-sm">{{ strtoupper(substr($post->author->name ?? 'Admin', 0, 1)) }}</span>
+                            </div>
+                            <div>
+                                <p class="text-gray-900 font-semibold text-sm">{{ $post->author->name ?? 'Administration' }}</p>
+                                <p class="text-gray-500 text-xs">{{ $post->created_at->diffForHumans() }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2 text-gray-400">
+                            <i class="fas fa-eye text-sm"></i>
+                            <span class="text-sm">{{ rand(50, 500) }}</span>
+                        </div>
+                    </div>
+                    <button class="btn-read-more text-white px-8 py-4 rounded-2xl font-bold shadow-xl w-full">
+                        Lire l'Article Complet →
                     </button>
                 </div>
             </article>
-
-            {{-- Article 2 --}}
-            <article class="bg-white rounded-2xl overflow-hidden shadow-lg article-card fade-in-up" style="animation-delay: 0.2s;">
-                <div class="h-64 overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                         alt="Baobab africain" class="w-full h-full object-cover hover-scale">
-                </div>
-                <div class="p-6">
-                    <div class="flex items-center mb-4">
-                        <span class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs font-medium">ENVIRONNEMENT</span>
-                        <span class="text-gray-500 text-sm ml-auto">12 Janvier 2024</span>
-                    </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors">
-                        Plantation de 1000 Arbres
-                    </h3>
-                    <p class="text-gray-600 mb-6 leading-relaxed">
-                        Notre association s'engage pour l'environnement avec une grande campagne de reboisement 
-                        dans la région de Tivaouane, en partenariat avec les autorités locales.
-                    </p>
-                    <button class="btn-read-more text-white px-6 py-3 rounded-full font-semibold shadow-lg">
-                        Lire la suite →
-                    </button>
-                </div>
-            </article>
-
-            {{-- Article 3 --}}
-            <article class="bg-white rounded-2xl overflow-hidden shadow-lg article-card fade-in-up" style="animation-delay: 0.4s;">
-                <div class="h-64 overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                         alt="Marché africain" class="w-full h-full object-cover hover-scale">
-                </div>
-                <div class="p-6">
-                    <div class="flex items-center mb-4">
-                        <span class="bg-purple-100 text-purple-600 px-3 py-1 rounded-full text-xs font-medium">CULTURE</span>
-                        <span class="text-gray-500 text-sm ml-auto">8 Janvier 2024</span>
-                    </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors">
-                        Festival Culturel Annuel
-                    </h3>
-                    <p class="text-gray-600 mb-6 leading-relaxed">
-                        Préparation du grand festival culturel de notre association qui mettra à l'honneur 
-                        les traditions sénégalaises et l'art de notre région.
-                    </p>
-                    <button class="btn-read-more text-white px-6 py-3 rounded-full font-semibold shadow-lg">
-                        Lire la suite →
-                    </button>
-                </div>
-            </article>
-
-            {{-- Article 4 --}}
-            <article class="bg-white rounded-2xl overflow-hidden shadow-lg article-card fade-in-up" style="animation-delay: 0.6s;">
-                <div class="h-64 overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1571771019784-3ff35f4f4277?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                         alt="Femmes africaines" class="w-full h-full object-cover hover-scale">
-                </div>
-                <div class="p-6">
-                    <div class="flex items-center mb-4">
-                        <span class="bg-pink-100 text-pink-600 px-3 py-1 rounded-full text-xs font-medium">SOLIDARITÉ</span>
-                        <span class="text-gray-500 text-sm ml-auto">5 Janvier 2024</span>
-                    </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors">
-                        Soutien aux Femmes Entrepreneures
-                    </h3>
-                    <p class="text-gray-600 mb-6 leading-relaxed">
-                        Lancement d'un programme de microfinance pour accompagner 30 femmes entrepreneures 
-                        de la région dans leurs projets d'activités génératrices de revenus.
-                    </p>
-                    <button class="btn-read-more text-white px-6 py-3 rounded-full font-semibold shadow-lg">
-                        Lire la suite →
-                    </button>
-                </div>
-            </article>
-
-            {{-- Article 5 --}}
-            <article class="bg-white rounded-2xl overflow-hidden shadow-lg article-card fade-in-up" style="animation-delay: 0.8s;">
-                <div class="h-64 overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                         alt="Coucher de soleil africain" class="w-full h-full object-cover hover-scale">
-                </div>
-                <div class="p-6">
-                    <div class="flex items-center mb-4">
-                        <span class="bg-yellow-100 text-yellow-600 px-3 py-1 rounded-full text-xs font-medium">ASSEMBLÉE</span>
-                        <span class="text-gray-500 text-sm ml-auto">2 Janvier 2024</span>
-                    </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors">
-                        Assemblée Générale 2024
-                    </h3>
-                    <p class="text-gray-600 mb-6 leading-relaxed">
-                        Invitation à tous les membres pour notre assemblée générale annuelle qui se tiendra 
-                        le 15 février 2024 à Dakar. Ordre du jour et modalités d'inscription.
-                    </p>
-                    <button class="btn-read-more text-white px-6 py-3 rounded-full font-semibold shadow-lg">
-                        Lire la suite →
-                    </button>
-                </div>
-            </article>
-
-            {{-- Article 6 --}}
-            <article class="bg-white rounded-2xl overflow-hidden shadow-lg article-card fade-in-up" style="animation-delay: 1s;">
-                <div class="h-64 overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1484318571209-661cf29a69ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                         alt="Enfants africains" class="w-full h-full object-cover hover-scale">
-                </div>
-                <div class="p-6">
-                    <div class="flex items-center mb-4">
-                        <span class="bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full text-xs font-medium">PARTENARIAT</span>
-                        <span class="text-gray-500 text-sm ml-auto">28 Décembre 2023</span>
-                    </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors">
-                        Partenariat avec l'UNICEF
-                    </h3>
-                    <p class="text-gray-600 mb-6 leading-relaxed">
-                        Signature d'un accord de partenariat avec l'UNICEF pour améliorer l'accès à l'éducation 
-                        et à la santé des enfants dans la région de Tivaouane.
-                    </p>
-                    <button class="btn-read-more text-white px-6 py-3 rounded-full font-semibold shadow-lg">
-                        Lire la suite →
-                    </button>
-                </div>
-            </article>
+            @endforeach
         </div>
-
-        {{-- Pagination --}}
-        <div class="flex justify-center mt-16">
-            <div class="flex items-center space-x-2">
-                <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">1</button>
-                <button class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors">2</button>
-                <button class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors">3</button>
-                <span class="px-3 text-gray-500">...</span>
-                <button class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors">
-                    Suivant →
-                </button>
+        
+        {{-- Load More Button --}}
+        <div class="text-center mt-16">
+            <button class="px-12 py-4 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white font-bold rounded-2xl hover:shadow-2xl transition-all transform hover:scale-105">
+                📚 Charger Plus d'Articles
+            </button>
+        </div>
+        @else
+        {{-- Empty State Premium --}}
+        <div class="text-center py-20">
+            <div class="w-32 h-32 mx-auto bg-gradient-to-br from-blue-100 to-purple-100 rounded-full flex items-center justify-center mb-8">
+                <i class="fas fa-newspaper text-blue-500 text-5xl"></i>
             </div>
-        </div> -->
-    </div>
-</section>
-
-{{-- Section Newsletter --}}
-<section class="py-20 bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-900">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-12 border border-white/20">
-            <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
-                Restez <span class="text-amber-400">Informés</span>
-            </h2>
-            <p class="text-xl text-blue-100 mb-8 leading-relaxed">
-                Abonnez-vous à notre newsletter pour recevoir toutes nos actualités et ne rien manquer de la vie de notre association
+            <h3 class="text-3xl font-bold text-gray-900 mb-4">Aucune Actualité Disponible</h3>
+            <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+                Nous préparons du contenu exceptionnel pour vous. Revenez bientôt pour découvrir nos dernières actualités !
             </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-                <input type="email" placeholder="Votre adresse email" 
-                       class="flex-1 px-6 py-4 rounded-full border-0 bg-white/20 backdrop-blur-sm text-white placeholder-blue-200 focus:ring-2 focus:ring-amber-400 focus:outline-none">
-                <button class="bg-gradient-to-r from-amber-500 to-orange-500 text-white px-8 py-4 rounded-full hover:from-amber-600 hover:to-orange-600 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105">
-                    S'abonner
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold rounded-2xl hover:shadow-xl transition-all">
+                    🔔 M'alerter des Nouveautés
                 </button>
+                <a href="{{ route('home') }}" class="px-8 py-4 glass-effect text-gray-700 font-bold rounded-2xl hover:shadow-xl transition-all">
+                    🏠 Retour à l'Accueil
+                </a>
             </div>
         </div>
+        @endif
     </div>
 </section>
+
+{{-- Newsletter Section --}}
+<section class="py-20 bg-gradient-to-r from-blue-900 via-purple-900 to-indigo-900 relative overflow-hidden">
+    <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.1\"%3E%3Ccircle cx=\"30\" cy=\"30\" r=\"1\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]"></div>
+    
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        <h2 class="text-4xl md:text-5xl font-black text-white mb-6">
+            Restez <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-orange-400">Connectés</span>
+        </h2>
+        <p class="text-xl text-blue-100 mb-10 leading-relaxed">
+            Recevez nos dernières actualités directement dans votre boîte mail
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
+            <input type="email" placeholder="Votre adresse email" class="flex-1 px-6 py-4 rounded-2xl border-0 focus:ring-4 focus:ring-blue-300 text-gray-900 font-semibold">
+            <button class="px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold rounded-2xl hover:shadow-2xl transition-all transform hover:scale-105">
+                S'abonner 📧
+            </button>
+        </div>
+        
+        <p class="text-blue-200 text-sm mt-4">
+            ✨ Plus de 500 membres déjà abonnés
+        </p>
+    </div>
+</section>
+
+<script>
+// Animation au scroll
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.animationPlayState = 'running';
+        }
+    });
+}, observerOptions);
+
+document.querySelectorAll('.fade-in-up').forEach(el => {
+    el.style.animationPlayState = 'paused';
+    observer.observe(el);
+});
+
+// Hover effects premium
+document.querySelectorAll('.article-card').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+        card.style.transform = 'translateY(-15px) scale(1.02)';
+    });
+    
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = 'translateY(0) scale(1)';
+    });
+});
+</script>
 @endsection

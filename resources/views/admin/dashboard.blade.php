@@ -911,7 +911,7 @@ function editActualite(id) {
 function deleteActualite(id) {
     Swal.fire({
         title: 'Supprimer cette actualité ?',
-        text: 'Cette action est irréversible !',
+        text: 'Cette action supprimera définitivement l\'actualité et son image associée !',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#ef4444',
@@ -920,11 +920,55 @@ function deleteActualite(id) {
         cancelButtonText: 'Annuler'
     }).then((result) => {
         if (result.isConfirmed) {
+            // Afficher un loader
             Swal.fire({
-                icon: 'success',
-                title: 'Supprimée !',
-                text: 'L\'actualité a été supprimée.',
-                timer: 2000
+                title: 'Suppression en cours...',
+                text: 'Veuillez patienter',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            
+            // Appel AJAX pour supprimer l'actualité
+            fetch(`/admin/actualites/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Supprimée !',
+                        text: data.message,
+                        timer: 2000,
+                        showConfirmButton: false
+                    }).then(() => {
+                        // Recharger la page pour mettre à jour la liste
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erreur !',
+                        text: data.message || 'Une erreur est survenue lors de la suppression.',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erreur !',
+                    text: 'Une erreur réseau est survenue. Veuillez réessayer.',
+                    confirmButtonText: 'OK'
+                });
             });
         }
     });

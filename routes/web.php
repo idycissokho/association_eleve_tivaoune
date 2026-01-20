@@ -6,6 +6,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\ActualiteController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -67,7 +68,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/members/store', [MemberController::class, 'store'])->name('admin.members.store');
     
     // Routes actualités
-    Route::post('/admin/actualites/store', [PostController::class, 'store'])->name('admin.actualites.store');
+    Route::post('/admin/actualites/store', [ActualiteController::class, 'store'])->name('admin.actualites.store');
+    Route::delete('/admin/actualites/{id}', [ActualiteController::class, 'destroy'])->name('admin.actualites.destroy');
 });
 
 // Route de test pour vérifier l'auth
