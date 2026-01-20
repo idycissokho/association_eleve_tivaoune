@@ -5,6 +5,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\MemberController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -44,27 +45,20 @@ Route::get('/dashboard', function () {
     return view('admin.dashboard');
 })->name('dashboard');
 
-Route::get('/admin/dashboard', function () {
-    // Vérification alternative si la session standard ne fonctionne pas
-    if (!auth()->check() && session('user_id')) {
-        $user = \App\Models\User::find(session('user_id'));
-        if ($user) {
-            auth()->login($user);
-        }
-    }
-    
-    if (!auth()->check()) {
-        return redirect()->route('login');
-    }
-    
-    return view('admin.dashboard');
-})->name('admin.dashboard');
+Route::get('/admin/dashboard', [PostController::class, 'adminIndex'])->name('admin.dashboard');
 
-// Routes galerie admin
+// Routes admin
 Route::middleware('auth')->group(function () {
+    // Routes galerie
     Route::post('/admin/gallery/upload', [GalleryController::class, 'uploadImages'])->name('admin.gallery.upload');
     Route::get('/admin/gallery/images', [GalleryController::class, 'getImages'])->name('admin.gallery.images');
     Route::delete('/admin/gallery/delete', [GalleryController::class, 'deleteImage'])->name('admin.gallery.delete');
+    
+    // Routes membres
+    Route::post('/admin/members/store', [MemberController::class, 'store'])->name('admin.members.store');
+    
+    // Routes actualités
+    Route::post('/admin/actualites/store', [PostController::class, 'store'])->name('admin.actualites.store');
 });
 
 // Route de test pour vérifier l'auth

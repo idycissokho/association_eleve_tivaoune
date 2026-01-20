@@ -64,7 +64,7 @@
     <div class="card-premium rounded-2xl p-8 mb-8">
         <h2 class="text-xl font-bold text-gray-900 mb-6">Actions rapides</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <button class="flex flex-col items-center p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl hover:from-blue-100 hover:to-blue-200 transition-all hover-lift group">
+            <button onclick="showMembersSection()" class="flex flex-col items-center p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl hover:from-blue-100 hover:to-blue-200 transition-all hover-lift group">
                 <div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
                     <i class="fas fa-users-cog text-white"></i>
                 </div>
@@ -78,11 +78,11 @@
                 <span class="text-amber-900 font-semibold">Créer événement</span>
             </button>
             
-            <button class="flex flex-col items-center p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl hover:from-blue-100 hover:to-blue-200 transition-all hover-lift group">
+            <button onclick="showActualitesSection(); setTimeout(toggleActualiteForm, 100);" class="flex flex-col items-center p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl hover:from-blue-100 hover:to-blue-200 transition-all hover-lift group">
                 <div class="w-12 h-12 bg-gradient-to-br from-blue-800 to-blue-900 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                    <i class="fas fa-edit text-white"></i>
+                    <i class="fas fa-newspaper text-white"></i>
                 </div>
-                <span class="text-blue-900 font-semibold">Créer article</span>
+                <span class="text-blue-900 font-semibold">Créer actualité</span>
             </button>
             
             <button onclick="showGallerySection()" class="flex flex-col items-center p-6 bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl hover:from-amber-100 hover:to-amber-200 transition-all hover-lift group">
@@ -127,6 +127,128 @@
                     <p class="text-sm text-gray-600">Il y a 3 jours</p>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Members Management Section -->
+<div id="members-content" class="p-8" style="display: none;">
+    <div class="mb-8">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">Gestion des Membres</h1>
+                <p class="text-gray-600">Gérez les membres de l'association</p>
+            </div>
+            <button onclick="showDashboardSection()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all">
+                <i class="fas fa-arrow-left mr-2"></i>Retour
+            </button>
+        </div>
+    </div>
+
+    <!-- Add Member Form -->
+    <div id="add-member-form" class="card-premium rounded-2xl p-8 mb-8" style="display: none;">
+        <h2 class="text-xl font-bold text-gray-900 mb-6">Ajouter un nouveau membre</h2>
+        
+        <form method="POST" action="{{ route('admin.members.store') }}" class="space-y-6">
+            @csrf
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="form-group">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Prénom *</label>
+                    <input type="text" name="first_name" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" placeholder="Prénom du membre">
+                </div>
+                <div class="form-group">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Nom *</label>
+                    <input type="text" name="last_name" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" placeholder="Nom du membre">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Email *</label>
+                <input type="email" name="email" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" placeholder="email@exemple.com">
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="form-group">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Mot de passe *</label>
+                    <input type="password" name="password" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" placeholder="••••••••">
+                </div>
+                <div class="form-group">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Confirmer mot de passe *</label>
+                    <input type="password" name="password_confirmation" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" placeholder="••••••••">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Rôle *</label>
+                <select name="role" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                    <option value="">Sélectionner un rôle</option>
+                    <option value="membre">Membre</option>
+                    <option value="secretaire">Secrétaire</option>
+                    <option value="tresorier">Trésorier</option>
+                    <option value="president">Président</option>
+                </select>
+            </div>
+            
+            <div class="flex justify-end space-x-4">
+                <button type="button" onclick="toggleAddMemberForm()" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all">
+                    Annuler
+                </button>
+                <button type="submit" class="px-8 py-3 bg-gradient-to-r from-blue-600 to-amber-600 text-white rounded-xl hover:shadow-lg transition-all">
+                    <i class="fas fa-save mr-2"></i>Ajouter le membre
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Members List -->
+    <div id="members-list" class="card-premium rounded-2xl p-8">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-bold text-gray-900">Liste des Membres</h2>
+            <button onclick="toggleAddMemberForm()" class="bg-gradient-to-r from-blue-600 to-amber-600 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all">
+                <i class="fas fa-plus mr-2"></i>Ajouter un membre
+            </button>
+        </div>
+        
+        <!-- Search Bar -->
+        <div class="mb-6">
+            <input type="text" id="memberSearch" placeholder="Rechercher un membre..." class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+        </div>
+        
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead>
+                    <tr class="border-b border-gray-200">
+                        <th class="text-left py-3 px-4 font-semibold text-gray-700">Nom</th>
+                        <th class="text-left py-3 px-4 font-semibold text-gray-700">Email</th>
+                        <th class="text-left py-3 px-4 font-semibold text-gray-700">Rôle</th>
+                        <th class="text-left py-3 px-4 font-semibold text-gray-700">Statut</th>
+                        <th class="text-left py-3 px-4 font-semibold text-gray-700">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(\App\Models\User::all() as $user)
+                    <tr class="border-b border-gray-100 hover:bg-gray-50 transition-all">
+                        <td class="py-3 px-4">{{ $user->name }}</td>
+                        <td class="py-3 px-4">{{ $user->email }}</td>
+                        <td class="py-3 px-4">
+                            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">
+                                {{ $user->is_admin ? 'Admin' : 'Membre' }}
+                            </span>
+                        </td>
+                        <td class="py-3 px-4">
+                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">
+                                {{ $user->is_active ? 'Actif' : 'Inactif' }}
+                            </span>
+                        </td>
+                        <td class="py-3 px-4">
+                            <button class="text-blue-600 hover:text-blue-800 mr-2 transition-colors"><i class="fas fa-edit"></i></button>
+                            <button class="text-red-600 hover:text-red-800 transition-colors"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -253,6 +375,183 @@
 </div>
 
 <script>
+// Navigation functions
+function hideAllSections() {
+    const sections = ['dashboard-content', 'gallery-content', 'members-content', 'profile-content', 'actualites-content'];
+    sections.forEach(sectionId => {
+        const section = document.getElementById(sectionId);
+        if (section) section.style.display = 'none';
+    });
+}
+
+function showActualitesSection() {
+    hideAllSections();
+    document.getElementById('actualites-content').style.display = 'block';
+}
+
+function showArticlesSection() {
+    showActualitesSection(); // Redirection vers actualités
+}
+
+function toggleActualiteForm() {
+    const form = document.getElementById('add-actualite-form');
+    const list = document.getElementById('actualites-list');
+    
+    if (form.style.display === 'none' || form.style.display === '') {
+        form.style.display = 'block';
+        list.style.display = 'none';
+        // Scroll vers le formulaire
+        form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+        form.style.display = 'none';
+        list.style.display = 'block';
+    }
+}
+
+// Gestion upload image avec nommage automatique
+
+
+
+
+function editActualite(id) {
+    Swal.fire({
+        icon: 'info',
+        title: 'Modification',
+        text: `Modification de l'actualité #${id}`,
+        timer: 2000
+    });
+}
+
+function deleteActualite(id) {
+    Swal.fire({
+        title: 'Supprimer cette actualité ?',
+        text: 'Cette action est irréversible !',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Oui, supprimer',
+        cancelButtonText: 'Annuler'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Supprimée !',
+                text: 'L\'actualité a été supprimée.',
+                timer: 2000
+            });
+        }
+    });
+}
+
+function clearActualiteImage() {
+    document.getElementById('actualiteImageInput').value = '';
+    document.getElementById('actualiteImagePreview').classList.add('hidden');
+}
+
+// Gestion drag & drop et aperçu image
+document.addEventListener('DOMContentLoaded', function() {
+    const dropZone = document.getElementById('dropZone');
+    const imageInput = document.getElementById('actualiteImageInput');
+    const imagePreview = document.getElementById('actualiteImagePreview');
+    const previewImg = document.getElementById('actualitePreviewImg');
+    
+    if (dropZone && imageInput) {
+        // Click sur la zone de drop
+        dropZone.addEventListener('click', () => imageInput.click());
+        
+        // Drag & Drop
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('border-blue-500', 'bg-blue-100');
+        });
+        
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('border-blue-500', 'bg-blue-100');
+        });
+        
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('border-blue-500', 'bg-blue-100');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0 && files[0].type.startsWith('image/')) {
+                imageInput.files = files;
+                handleImagePreview(files[0]);
+            }
+        });
+        
+        // Change sur input
+        imageInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleImagePreview(e.target.files[0]);
+            }
+        });
+    }
+    
+    function handleImagePreview(file) {
+        if (file && file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                previewImg.src = e.target.result;
+                imagePreview.classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+});
+
+function showDashboardSection() {
+    hideAllSections();
+    document.getElementById('dashboard-content').style.display = 'block';
+}
+
+function showGallerySection() {
+    hideAllSections();
+    document.getElementById('gallery-content').style.display = 'block';
+}
+
+function showMembersSection() {
+    hideAllSections();
+    document.getElementById('members-content').style.display = 'block';
+}
+
+function showActualitesSection() {
+    hideAllSections();
+    document.getElementById('actualites-content').style.display = 'block';
+}
+
+function showProfileSection() {
+    hideAllSections();
+    document.getElementById('profile-content').style.display = 'block';
+}
+
+function toggleActualiteForm() {
+    const form = document.getElementById('add-actualite-form');
+    const list = document.getElementById('actualites-list');
+    
+    if (form.style.display === 'none' || form.style.display === '') {
+        form.style.display = 'block';
+        list.style.display = 'none';
+        form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+        form.style.display = 'none';
+        list.style.display = 'block';
+    }
+}
+
+function toggleAddMemberForm() {
+    const form = document.getElementById('add-member-form');
+    const list = document.getElementById('members-list');
+    if (form.style.display === 'none') {
+        form.style.display = 'block';
+        list.style.display = 'none';
+    } else {
+        form.style.display = 'none';
+        list.style.display = 'block';
+    }
+}
+
 // Upload preview
 document.getElementById('imageInput').addEventListener('change', function(e) {
     const files = e.target.files;
@@ -286,8 +585,90 @@ document.getElementById('imageInput').addEventListener('change', function(e) {
     }
 });
 
-// Load page
-function loadPage(page) {
+// Upload preview for articles
+document.addEventListener('DOMContentLoaded', function() {
+    const articleImageInput = document.getElementById('articleImageInput');
+    if (articleImageInput) {
+        articleImageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const preview = document.getElementById('articleImagePreview');
+            
+            if (file && file.type.startsWith('image/')) {
+                preview.classList.remove('hidden');
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `
+                        <div class="relative inline-block">
+                            <img src="${e.target.result}" alt="Aperçu" class="w-32 h-24 object-cover rounded-xl shadow-lg">
+                            <button type="button" onclick="clearArticleImage()" class="absolute -top-2 -right-2 bg-red-600 text-white p-1 rounded-full text-xs hover:bg-red-700">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.classList.add('hidden');
+            }
+        });
+    }
+    
+    // Article search functionality
+    const articleSearch = document.getElementById('articleSearch');
+    const categoryFilter = document.getElementById('categoryFilter');
+    
+    if (articleSearch) {
+        articleSearch.addEventListener('input', filterArticles);
+    }
+    if (categoryFilter) {
+        categoryFilter.addEventListener('change', filterArticles);
+    }
+});
+
+function handleArticleSubmit(event) {
+    event.preventDefault();
+    
+    // Simulation de sauvegarde
+    Swal.fire({
+        icon: 'success',
+        title: 'Article créé !',
+        text: 'Votre article a été publié avec succès.',
+        timer: 2000,
+        showConfirmButton: false
+    }).then(() => {
+        // Réinitialiser le formulaire
+        event.target.reset();
+        clearArticleImage();
+        // Retourner à la liste
+        toggleAddArticleForm();
+    });
+}
+
+function clearArticleImage() {
+    document.getElementById('articleImageInput').value = '';
+    document.getElementById('articleImagePreview').classList.add('hidden');
+}
+
+function filterArticles() {
+    const searchTerm = document.getElementById('articleSearch').value.toLowerCase();
+    const categoryFilter = document.getElementById('categoryFilter').value;
+    const rows = document.querySelectorAll('#articlesTableBody tr');
+    
+    rows.forEach(row => {
+        const title = row.querySelector('h3').textContent.toLowerCase();
+        const description = row.querySelector('p').textContent.toLowerCase();
+        const category = row.querySelector('.bg-blue-100, .bg-amber-100, .bg-green-100').textContent.toLowerCase();
+        
+        const matchesSearch = title.includes(searchTerm) || description.includes(searchTerm);
+        const matchesCategory = !categoryFilter || category.includes(categoryFilter);
+        
+        if (matchesSearch && matchesCategory) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
     fetch(`{{ route('admin.gallery.images') }}?page=${page}`)
         .then(response => response.json())
         .then(data => {
@@ -344,17 +725,305 @@ function deleteImage(filename) {
         });
     }
 }
-
-function showGallerySection() {
-    document.getElementById('dashboard-content').style.display = 'none';
-    document.getElementById('gallery-content').style.display = 'block';
-}
-
-function showDashboardSection() {
-    document.getElementById('gallery-content').style.display = 'none';
-    document.getElementById('dashboard-content').style.display = 'block';
-}
 </script>
+
+<!-- Actualités Management Section -->
+<div id="actualites-content" class="p-8" style="display: none;">
+    <div class="mb-8">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">Gestion des Actualités</h1>
+                <p class="text-gray-600">Créez et gérez les actualités de l'association</p>
+            </div>
+            <button onclick="showDashboardSection()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all">
+                <i class="fas fa-arrow-left mr-2"></i>Retour
+            </button>
+        </div>
+    </div>
+
+    <!-- Formulaire Actualité -->
+    <div id="add-actualite-form" class="card-premium rounded-2xl p-8 mb-8" style="display: none;">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-gray-900">Nouvelle Actualité</h2>
+            <button onclick="toggleActualiteForm()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        
+        <form id="actualiteForm" method="POST" action="{{ route('admin.actualites.store') }}" enctype="multipart/form-data" class="space-y-8">
+            @csrf
+            
+        <form id="actualiteForm" method="POST" action="{{ route('admin.actualites.store') }}" enctype="multipart/form-data" class="space-y-8">
+            @csrf
+            
+            <!-- Titre avec animation -->
+            <div class="form-group relative">
+                <input type="text" id="titre" name="titre" required value="{{ old('titre') }}"
+                       class="peer w-full px-4 py-4 border-2 {{ $errors->has('titre') ? 'border-red-500' : 'border-gray-200' }} rounded-xl focus:border-blue-500 focus:outline-none transition-all bg-white placeholder-transparent"
+                       placeholder="Titre de l'actualité">
+                <label for="titre" class="absolute left-4 -top-2.5 bg-white px-2 text-sm font-semibold {{ $errors->has('titre') ? 'text-red-600' : 'text-blue-600' }} transition-all peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-600">
+                    Titre de l'actualité *
+                </label>
+                @error('titre')
+                    <p class="text-red-500 text-sm mt-1"><i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}</p>
+                @enderror
+            </div>
+            
+            <!-- Upload Image Premium -->
+            <div class="form-group">
+                <label class="block text-sm font-semibold text-gray-700 mb-4">Image de l'actualité</label>
+                <div class="relative">
+                    <div id="dropZone" class="border-2 border-dashed border-blue-300 rounded-2xl p-8 text-center hover:border-blue-500 transition-all bg-gradient-to-br from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 cursor-pointer group">
+                        <div class="space-y-4">
+                            <div class="w-16 h-16 mx-auto bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                                <i class="fas fa-cloud-upload-alt text-white text-2xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-xl font-bold text-gray-900 mb-2">Glissez votre image ici</p>
+                                <p class="text-gray-600 mb-4">ou cliquez pour sélectionner</p>
+                                <div class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-xl hover:shadow-lg transition-all">
+                                    <i class="fas fa-plus mr-2"></i>Choisir une image
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-500">JPG, PNG, WebP jusqu'à 5MB</p>
+                        </div>
+                    </div>
+                    <input type="file" id="actualiteImageInput" name="image" accept="image/*" class="hidden">
+                    
+                    @error('image')
+                        <p class="text-red-500 text-sm mt-2"><i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}</p>
+                    @enderror
+                    
+                    <!-- Aperçu Image -->
+                    <div id="actualiteImagePreview" class="mt-6 hidden">
+                        <div class="relative inline-block">
+                            <img id="actualitePreviewImg" src="" alt="Aperçu" class="w-full max-w-md h-48 object-cover rounded-2xl shadow-lg">
+                            <button type="button" onclick="clearActualiteImage()" class="absolute -top-3 -right-3 bg-red-500 hover:bg-red-600 text-white p-2 rounded-full shadow-lg transition-all">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contenu avec style premium -->
+            <div class="form-group relative">
+                <textarea id="contenu" name="contenu" required rows="8"
+                          class="peer w-full px-4 py-4 border-2 {{ $errors->has('contenu') ? 'border-red-500' : 'border-gray-200' }} rounded-xl focus:border-blue-500 focus:outline-none transition-all bg-white placeholder-transparent resize-none"
+                          placeholder="Contenu de l'actualité">{{ old('contenu') }}</textarea>
+                <label for="contenu" class="absolute left-4 -top-2.5 bg-white px-2 text-sm font-semibold {{ $errors->has('contenu') ? 'text-red-600' : 'text-blue-600' }} transition-all peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-600">
+                    Contenu de l'actualité *
+                </label>
+                @error('contenu')
+                    <p class="text-red-500 text-sm mt-1"><i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}</p>
+                @enderror
+            </div>
+            
+            <!-- Boutons Actions -->
+            <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
+                <button type="button" onclick="toggleActualiteForm()" class="px-8 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all">
+                    Annuler
+                </button>
+                <button type="submit" class="px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-xl hover:shadow-xl hover:scale-105 transition-all">
+                    <i class="fas fa-paper-plane mr-2"></i>Publier l'actualité
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Liste des Actualités -->
+    <div id="actualites-list" class="space-y-6">
+        <div class="flex items-center justify-between">
+            <h2 class="text-2xl font-bold text-gray-900">Actualités Publiées</h2>
+            <button onclick="toggleActualiteForm()" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl hover:shadow-lg hover:scale-105 transition-all font-semibold">
+                <i class="fas fa-plus mr-2"></i>Nouvelle Actualité
+            </button>
+        </div>
+        
+        <!-- Cards Grid -->
+        <div id="actualitesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @forelse($posts as $post)
+            <div class="card-premium rounded-2xl overflow-hidden hover-lift group">
+                <div class="relative">
+                    <img src="{{ $post->featured_image ? asset('images/' . $post->featured_image) : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzlDQTNBRiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlPC90ZXh0Pjwvc3ZnPg==' }}" alt="{{ $post->title }}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute top-4 right-4">
+                        <span class="{{ $post->is_published ? 'bg-green-500' : 'bg-yellow-500' }} text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg">
+                            {{ $post->is_published ? 'Publié' : 'Brouillon' }}
+                        </span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2">{{ $post->title }}</h3>
+                    <p class="text-gray-600 mb-4 line-clamp-3">{{ $post->excerpt ?? Str::limit(strip_tags($post->content), 100) }}</p>
+                    <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+                        <span><i class="fas fa-calendar mr-1"></i>{{ $post->created_at->format('d M Y') }}</span>
+                        <span><i class="fas fa-user mr-1"></i>{{ $post->author->name ?? 'Admin' }}</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="editActualite({{ $post->id }})" class="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-600 py-2 px-4 rounded-lg transition-all font-medium">
+                            <i class="fas fa-edit mr-1"></i>Modifier
+                        </button>
+                        <button onclick="deleteActualite({{ $post->id }})" class="flex-1 bg-red-50 hover:bg-red-100 text-red-600 py-2 px-4 rounded-lg transition-all font-medium">
+                            <i class="fas fa-trash mr-1"></i>Supprimer
+                        </button>
+                    </div>
+                </div>
+            </div>
+            @empty
+            <!-- Message si aucune actualité -->
+            <div class="col-span-3 text-center py-12">
+                <div class="w-24 h-24 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                    <i class="fas fa-newspaper text-gray-400 text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Aucune actualité</h3>
+                <p class="text-gray-600 mb-6">Commencez par créer votre première actualité</p>
+                <button onclick="toggleActualiteForm()" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transition-all">
+                    <i class="fas fa-plus mr-2"></i>Créer une actualité
+                </button>
+            </div>
+            @endforelse
+        </div>
+    </div>
+</div>
+
+<!-- Profile Management Section -->
+<div id="profile-content" class="p-8" style="display: none;">
+    <div class="mb-8">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">Mon Profil</h1>
+                <p class="text-gray-600">Gérez vos informations personnelles</p>
+            </div>
+            <button onclick="showDashboardSection()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all">
+                <i class="fas fa-arrow-left mr-2"></i>Retour
+            </button>
+        </div>
+    </div>
+
+    <div class="max-w-4xl">
+        <div class="card-premium rounded-2xl p-8">
+            <form method="POST" action="#" class="space-y-6">
+                @csrf
+                @method('PUT')
+                
+                <!-- Avatar Section -->
+                <div class="flex items-center space-x-6 mb-8">
+                    <div class="w-20 h-20 bg-gradient-to-br from-blue-600 to-amber-600 rounded-full flex items-center justify-center shadow-lg">
+                        <span class="text-white text-2xl font-bold">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</span>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-900">{{ auth()->user()->name }}</h3>
+                        <p class="text-gray-600">{{ auth()->user()->email }}</p>
+                        <p class="text-sm text-amber-600 font-medium">Promotion {{ auth()->user()->promotion_year ?? '1993' }}</p>
+                    </div>
+                </div>
+
+                <!-- Nom complet -->
+                <div class="form-group">
+                    <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Nom complet *</label>
+                    <input type="text" id="name" name="name" required
+                           class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                           placeholder="Votre nom complet" value="{{ auth()->user()->name }}">
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Adresse email *</label>
+                    <input type="email" id="email" name="email" required
+                           class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                           placeholder="votre@email.com" value="{{ auth()->user()->email }}">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Téléphone -->
+                    <div class="form-group">
+                        <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2">Téléphone</label>
+                        <input type="text" id="phone" name="phone"
+                               class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                               placeholder="+221 XX XXX XX XX" value="{{ auth()->user()->phone ?? '' }}">
+                    </div>
+
+                    <!-- Année de promotion -->
+                    <div class="form-group">
+                        <label for="promotion_year" class="block text-sm font-semibold text-gray-700 mb-2">Année de promotion</label>
+                        <input type="text" id="promotion_year" name="promotion_year"
+                               class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                               placeholder="1993" value="{{ auth()->user()->promotion_year ?? '1993' }}">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Profession actuelle -->
+                    <div class="form-group">
+                        <label for="current_profession" class="block text-sm font-semibold text-gray-700 mb-2">Profession actuelle</label>
+                        <input type="text" id="current_profession" name="current_profession"
+                               class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                               placeholder="Votre profession" value="{{ auth()->user()->current_profession ?? '' }}">
+                    </div>
+
+                    <!-- Localisation actuelle -->
+                    <div class="form-group">
+                        <label for="current_location" class="block text-sm font-semibold text-gray-700 mb-2">Localisation actuelle</label>
+                        <input type="text" id="current_location" name="current_location"
+                               class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                               placeholder="Votre ville/pays" value="{{ auth()->user()->current_location ?? '' }}">
+                    </div>
+                </div>
+
+                <!-- Biographie -->
+                <div class="form-group">
+                    <label for="bio" class="block text-sm font-semibold text-gray-700 mb-2">Biographie</label>
+                    <textarea id="bio" name="bio" rows="3"
+                              class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                              placeholder="Parlez-nous de vous...">{{ auth()->user()->bio ?? '' }}</textarea>
+                </div>
+
+                <!-- Section Mot de passe -->
+                <div class="border-t border-gray-200 pt-6">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4">Changer le mot de passe</h3>
+                    <p class="text-sm text-gray-600 mb-4">Laissez vide si vous ne souhaitez pas changer votre mot de passe</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <!-- Mot de passe actuel -->
+                        <div class="form-group">
+                            <label for="current_password" class="block text-sm font-semibold text-gray-700 mb-2">Mot de passe actuel</label>
+                            <input type="password" id="current_password" name="current_password"
+                                   class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                   placeholder="••••••••">
+                        </div>
+
+                        <!-- Nouveau mot de passe -->
+                        <div class="form-group">
+                            <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">Nouveau mot de passe</label>
+                            <input type="password" id="password" name="password"
+                                   class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                   placeholder="••••••••">
+                        </div>
+
+                        <!-- Confirmation -->
+                        <div class="form-group">
+                            <label for="password_confirmation" class="block text-sm font-semibold text-gray-700 mb-2">Confirmer</label>
+                            <input type="password" id="password_confirmation" name="password_confirmation"
+                                   class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                   placeholder="••••••••">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="flex items-center justify-end space-x-4 pt-6">
+                    <button type="button" onclick="showDashboardSection()" class="px-6 py-3 border border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-all">
+                        Annuler
+                    </button>
+                    <button type="submit" class="px-8 py-3 bg-gradient-to-r from-blue-600 to-amber-600 text-white font-semibold rounded-xl hover:shadow-lg transition-all">
+                        <i class="fas fa-save mr-2"></i>
+                        Mettre à jour le profil
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 @else
 <div class="min-h-screen bg-gray-50 flex items-center justify-center">
