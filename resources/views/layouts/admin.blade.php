@@ -126,10 +126,15 @@
                         </div>
 
                         <!-- Logout Button -->
-                        <button onclick="window.location.href='/connexion'" class="flex items-center space-x-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-all">
+                        <button onclick="confirmLogout()" class="flex items-center space-x-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-all">
                             <i class="fas fa-sign-out-alt"></i>
                             <span class="hidden md:inline">Déconnexion</span>
                         </button>
+                        
+                        <!-- Hidden logout form -->
+                        <form id="logoutForm" method="POST" action="{{ route('logout') }}" class="hidden">
+                            @csrf
+                        </form>
                     </div>
                 </div>
             </nav>
@@ -142,6 +147,25 @@
     </div>
 
     <script>
+        // Fonction de confirmation de déconnexion
+        function confirmLogout() {
+            Swal.fire({
+                title: 'Se déconnecter ?',
+                text: 'Voulez-vous vraiment vous déconnecter ?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Oui, se déconnecter',
+                cancelButtonText: 'Annuler'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Soumettre le formulaire de déconnexion
+                    document.getElementById('logoutForm').submit();
+                }
+            });
+        }
+        
         // Navigation functions
         function hideAllSections() {
             const sections = ['dashboard-content', 'gallery-content', 'members-content', 'actualites-content', 'profile-content'];

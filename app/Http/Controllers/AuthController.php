@@ -74,9 +74,21 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
+        // Déconnecter l'utilisateur
         Auth::logout();
+        
+        // Supprimer toutes les données de session
         $request->session()->invalidate();
+        
+        // Régénérer le token CSRF
         $request->session()->regenerateToken();
-        return redirect('/')->with('success', 'Déconnexion réussie. À bientôt !');
+        
+        // Supprimer explicitement l'ID utilisateur de la session
+        $request->session()->forget('user_id');
+        
+        // Vider complètement la session
+        $request->session()->flush();
+        
+        return redirect()->route('login')->with('success', 'Déconnexion réussie. À bientôt !');
     }
 }
