@@ -47,4 +47,53 @@ class MemberController extends Controller
 
         return redirect()->route('dashboard')->with('success', 'Membre créé avec succès ! Un email de bienvenue a été envoyé. 🎉');
     }
+
+    public function show($id)
+    {
+        $user = User::findOrFail($id);
+        return response()->json($user);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $id,
+            'phone' => 'nullable|string|max:20',
+            'current_profession' => 'nullable|string|max:255',
+            'current_location' => 'nullable|string|max:255',
+            'promotion_year' => 'nullable|string|max:10',
+            'bio' => 'nullable|string|max:1000',
+        ]);
+
+        $user->update($request->only([
+            'name', 'email', 'phone', 'current_profession', 
+            'current_location', 'promotion_year', 'bio'
+        ]));
+
+        return redirect()->route('dashboard')->with('success', 'Profil mis à jour avec succès ! 🎉');
+    }
+
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+        
+        // Empêcher la suppression de son propre compte
+        if ($user->id === auth()->id()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Vous ne pouvez pas supprimer votre propre compte'
+            ]);
+        }
+        
+        $userName = $user->name;
+        $user->delete();
+        
+        return response()->json([
+            'success' => true,
+            'message' => "Le membre {$userName} a été supprimé avec succès"
+        ]);
+    }
 }

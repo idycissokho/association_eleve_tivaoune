@@ -580,7 +580,79 @@ button:hover {
         </div>
     </div>
 
-    <!-- Modal Edit Member -->
+    <!-- Modal View Member -->
+    <div id="viewMemberModal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-2xl font-bold text-gray-900">Profil du membre</h3>
+                    <button onclick="closeViewModal()" class="p-2 hover:bg-gray-100 rounded-full transition-all">
+                        <i class="fas fa-times text-gray-500"></i>
+                    </button>
+                </div>
+                
+                <!-- Avatar et infos principales -->
+                <div class="flex items-center space-x-6 mb-8 p-6 bg-gradient-to-r from-blue-50 to-amber-50 rounded-2xl">
+                    <div id="viewAvatar" class="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-2xl">
+                        <!-- Avatar sera généré dynamiquement -->
+                    </div>
+                    <div>
+                        <h4 id="viewName" class="text-xl font-bold text-gray-900"><!-- Nom --></h4>
+                        <p id="viewEmail" class="text-gray-600"><!-- Email --></p>
+                        <p id="viewMemberSince" class="text-sm text-amber-600 font-medium"><!-- Membre depuis --></p>
+                    </div>
+                </div>
+                
+                <!-- Informations détaillées -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Téléphone</label>
+                            <p id="viewPhone" class="text-gray-900 bg-gray-50 px-4 py-3 rounded-xl"><!-- Téléphone --></p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Promotion</label>
+                            <p id="viewPromotion" class="text-gray-900 bg-gray-50 px-4 py-3 rounded-xl"><!-- Promotion --></p>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Profession</label>
+                            <p id="viewProfession" class="text-gray-900 bg-gray-50 px-4 py-3 rounded-xl"><!-- Profession --></p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Localisation</label>
+                            <p id="viewLocation" class="text-gray-900 bg-gray-50 px-4 py-3 rounded-xl"><!-- Localisation --></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Biographie -->
+                <div class="mt-6">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Biographie</label>
+                    <p id="viewBio" class="text-gray-900 bg-gray-50 px-4 py-3 rounded-xl min-h-[80px]"><!-- Biographie --></p>
+                </div>
+                
+                <!-- Statut et rôle -->
+                <div class="flex items-center justify-between mt-6 p-4 bg-gray-50 rounded-xl">
+                    <div>
+                        <span class="text-sm font-semibold text-gray-700">Statut :</span>
+                        <span id="viewStatus" class="ml-2"><!-- Statut --></span>
+                    </div>
+                    <div>
+                        <span class="text-sm font-semibold text-gray-700">Rôle :</span>
+                        <span id="viewRole" class="ml-2"><!-- Rôle --></span>
+                    </div>
+                </div>
+                
+                <div class="flex justify-end space-x-4 pt-6">
+                    <button onclick="closeViewModal()" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all">
+                        Fermer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="editMemberModal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div class="p-8">
@@ -613,8 +685,13 @@ button:hover {
                         <button type="button" onclick="closeEditModal()" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all">
                             Annuler
                         </button>
-                        <button type="submit" class="px-8 py-3 bg-gradient-to-r from-blue-600 to-amber-600 text-white rounded-xl hover:from-blue-700 hover:to-amber-700 transition-all">
-                            Sauvegarder
+                        <button type="submit" id="saveButton" class="px-8 py-3 bg-gradient-to-r from-blue-600 to-amber-600 text-white rounded-xl hover:from-blue-700 hover:to-amber-700 transition-all">
+                            <span id="saveButtonText">
+                                <i class="fas fa-save mr-2"></i>Sauvegarder
+                            </span>
+                            <span id="saveButtonLoading" class="hidden">
+                                <i class="fas fa-spinner fa-spin mr-2"></i>Modification en cours...
+                            </span>
                         </button>
                     </div>
                 </form>
@@ -622,26 +699,7 @@ button:hover {
         </div>
     </div>
 
-    <!-- Modal Delete Confirmation -->
-    <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full">
-            <div class="p-8 text-center">
-                <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fas fa-exclamation-triangle text-red-600 text-2xl"></i>
-                </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-2">Confirmer la suppression</h3>
-                <p class="text-gray-600 mb-6">Êtes-vous sûr de vouloir supprimer <span id="deleteMemberName" class="font-semibold"></span> ? Cette action est irréversible.</p>
-                <div class="flex space-x-4">
-                    <button onclick="closeDeleteModal()" class="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all">
-                        Annuler
-                    </button>
-                    <button onclick="deleteMember()" class="flex-1 px-6 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-all">
-                        Supprimer
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+
 </div>
 
 <!-- Gallery Management Section -->
@@ -766,6 +824,80 @@ button:hover {
 </div>
 
 <script>
+// Fonction de confirmation de suppression
+function confirmDelete(memberId, memberName) {
+    Swal.fire({
+        title: 'Supprimer ce membre ?',
+        text: `Êtes-vous sûr de vouloir supprimer ${memberName} ? Cette action est irréversible.`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Oui, supprimer',
+        cancelButtonText: 'Annuler'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            deleteMemberFromDB(memberId);
+        }
+    });
+}
+
+// Fonction de suppression en base de données
+function deleteMemberFromDB(memberId) {
+    Swal.fire({
+        title: 'Suppression en cours...',
+        text: 'Veuillez patienter',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+    
+    fetch(`/admin/members/${memberId}`, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erreur réseau');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Supprimé !',
+                text: data.message,
+                timer: 2000,
+                showConfirmButton: false
+            }).then(() => {
+                window.location.reload();
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erreur !',
+                text: data.message || 'Erreur lors de la suppression',
+                confirmButtonText: 'OK'
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Erreur:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Erreur !',
+            text: 'Une erreur réseau est survenue.',
+            confirmButtonText: 'OK'
+        });
+    });
+}
+
 // Navigation functions
 function hideAllSections() {
     const sections = ['dashboard-content', 'gallery-content', 'members-content', 'profile-content', 'actualites-content'];
@@ -1211,6 +1343,275 @@ function deleteImage(filename) {
     }
 }
 
+// Fonctions pour la modification des membres
+function viewMember(memberId) {
+    fetch(`/admin/members/${memberId}`)
+        .then(response => response.json())
+        .then(user => {
+            // Remplir les informations du modal
+            document.getElementById('viewAvatar').textContent = user.name.substring(0, 2).toUpperCase();
+            document.getElementById('viewName').textContent = user.name;
+            document.getElementById('viewEmail').textContent = user.email;
+            document.getElementById('viewMemberSince').textContent = `Membre depuis ${new Date(user.created_at).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })}`;
+            document.getElementById('viewPhone').textContent = user.phone || 'Non renseigné';
+            document.getElementById('viewPromotion').textContent = user.promotion_year || '1993-1997';
+            document.getElementById('viewProfession').textContent = user.current_profession || 'Non renseigné';
+            document.getElementById('viewLocation').textContent = user.current_location || 'Non renseigné';
+            document.getElementById('viewBio').textContent = user.bio || 'Aucune biographie renseignée';
+            
+            // Statut
+            const statusHtml = user.is_active 
+                ? '<span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800"><div class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>Actif</span>'
+                : '<span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800"><div class="w-2 h-2 bg-red-500 rounded-full mr-2"></div>Inactif</span>';
+            document.getElementById('viewStatus').innerHTML = statusHtml;
+            
+            // Rôle
+            const roleHtml = user.is_admin 
+                ? '<span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800"><i class="fas fa-crown mr-1 text-xs"></i>Admin</span>'
+                : '<span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800"><i class="fas fa-user mr-1 text-xs"></i>Membre</span>';
+            document.getElementById('viewRole').innerHTML = roleHtml;
+            
+            // Afficher le modal
+            document.getElementById('viewMemberModal').classList.remove('hidden');
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            Swal.fire('Erreur', 'Impossible de charger les données du membre', 'error');
+        });
+}
+
+function closeViewModal() {
+    document.getElementById('viewMemberModal').classList.add('hidden');
+}
+
+function editMember(memberId) {
+    fetch(`/admin/members/${memberId}`)
+        .then(response => response.json())
+        .then(user => {
+            document.getElementById('editName').value = user.name || '';
+            document.getElementById('editEmail').value = user.email || '';
+            document.getElementById('editPhone').value = user.phone || '';
+            document.getElementById('editProfession').value = user.current_profession || '';
+            
+            document.getElementById('editMemberForm').dataset.memberId = memberId;
+            document.getElementById('editMemberModal').classList.remove('hidden');
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            Swal.fire('Erreur', 'Impossible de charger les données du membre', 'error');
+        });
+}
+
+function closeEditModal() {
+    document.getElementById('editMemberModal').classList.add('hidden');
+}
+
+document.getElementById('editMemberForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Afficher le chargement
+    const saveButton = document.getElementById('saveButton');
+    const saveButtonText = document.getElementById('saveButtonText');
+    const saveButtonLoading = document.getElementById('saveButtonLoading');
+    
+    saveButton.disabled = true;
+    saveButtonText.classList.add('hidden');
+    saveButtonLoading.classList.remove('hidden');
+    
+    const memberId = this.dataset.memberId;
+    const formData = {
+        name: document.getElementById('editName').value,
+        email: document.getElementById('editEmail').value,
+        phone: document.getElementById('editPhone').value,
+        current_profession: document.getElementById('editProfession').value,
+        _method: 'PUT'
+    };
+    
+    fetch(`/admin/members/${memberId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Restaurer le bouton
+        saveButton.disabled = false;
+        saveButtonText.classList.remove('hidden');
+        saveButtonLoading.classList.add('hidden');
+        
+        if (data.success) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Modifié !',
+                text: data.message,
+                timer: 2000,
+                showConfirmButton: false
+            }).then(() => {
+                closeEditModal();
+                location.reload();
+            });
+        } else {
+            Swal.fire('Erreur', data.message, 'error');
+        }
+    })
+    .catch(error => {
+        // Restaurer le bouton en cas d'erreur
+        saveButton.disabled = false;
+        saveButtonText.classList.remove('hidden');
+        saveButtonLoading.classList.add('hidden');
+        
+function confirmDelete(memberId, memberName) {
+    Swal.fire({
+        title: 'Supprimer ce membre ?',
+        text: `Êtes-vous sûr de vouloir supprimer ${memberName} ? Cette action est irréversible.`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Oui, supprimer',
+        cancelButtonText: 'Annuler'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            deleteMemberFromDB(memberId);
+        }
+    });
+}
+
+function deleteMemberFromDB(memberId) {
+    Swal.fire({
+        title: 'Suppression en cours...',
+        text: 'Veuillez patienter',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+    
+    fetch(`/admin/members/${memberId}`, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erreur réseau');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Supprimé !',
+                text: data.message,
+                timer: 2000,
+                showConfirmButton: false
+            }).then(() => {
+                window.location.reload();
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erreur !',
+                text: data.message || 'Erreur lors de la suppression',
+                confirmButtonText: 'OK'
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Erreur:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Erreur !',
+            text: 'Une erreur réseau est survenue.',
+            confirmButtonText: 'OK'
+        });
+    });
+}
+
+function closeDeleteModal() {
+    document.getElementById('deleteModal').classList.add('hidden');
+}
+
+// Fonctions de suppression des membres
+function confirmDelete(memberId, memberName) {
+    Swal.fire({
+        title: 'Supprimer ce membre ?',
+        text: `Êtes-vous sûr de vouloir supprimer ${memberName} ? Cette action est irréversible.`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Oui, supprimer',
+        cancelButtonText: 'Annuler'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            deleteMemberFromDB(memberId);
+        }
+    });
+}
+
+function deleteMemberFromDB(memberId) {
+    Swal.fire({
+        title: 'Suppression en cours...',
+        text: 'Veuillez patienter',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+    
+    fetch(`/admin/members/${memberId}`, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erreur réseau');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Supprimé !',
+                text: data.message,
+                timer: 2000,
+                showConfirmButton: false
+            }).then(() => {
+                window.location.reload();
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erreur !',
+                text: data.message || 'Erreur lors de la suppression',
+                confirmButtonText: 'OK'
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Erreur:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Erreur !',
+            text: 'Une erreur réseau est survenue.',
+            confirmButtonText: 'OK'
+        });
+    });
+}
+
 // Load page function
 function loadPage(page) {
     fetch(`{{ route('admin.gallery.images') }}?page=${page}`)
@@ -1249,6 +1650,22 @@ function loadPage(page) {
             });
         });
 }
+
+// Gestion du formulaire de profil
+document.addEventListener('DOMContentLoaded', function() {
+    const profileForm = document.getElementById('profileForm');
+    if (profileForm) {
+        profileForm.addEventListener('submit', function(e) {
+            const updateBtn = document.getElementById('updateProfileBtn');
+            const updateText = document.getElementById('updateProfileText');
+            const updateLoading = document.getElementById('updateProfileLoading');
+            
+            updateBtn.disabled = true;
+            updateText.classList.add('hidden');
+            updateLoading.classList.remove('hidden');
+        });
+    }
+});
 </script>
 
 <!-- Actualités Management Section -->
@@ -1426,7 +1843,7 @@ function loadPage(page) {
 
     <div class="max-w-4xl">
         <div class="card-premium rounded-2xl p-8">
-            <form method="POST" action="#" class="space-y-6">
+            <form method="POST" action="/admin/members/{{ auth()->id() }}" id="profileForm" class="space-y-6">
                 @csrf
                 @method('PUT')
                 
@@ -1539,9 +1956,15 @@ function loadPage(page) {
                     <button type="button" onclick="showDashboardSection()" class="px-6 py-3 border border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-all">
                         Annuler
                     </button>
-                    <button type="submit" class="px-8 py-3 bg-gradient-to-r from-blue-600 to-amber-600 text-white font-semibold rounded-xl hover:shadow-lg transition-all">
-                        <i class="fas fa-save mr-2"></i>
-                        Mettre à jour le profil
+                    <button type="submit" id="updateProfileBtn" class="px-8 py-3 bg-gradient-to-r from-blue-600 to-amber-600 text-white font-semibold rounded-xl hover:shadow-lg transition-all">
+                        <span id="updateProfileText">
+                            <i class="fas fa-save mr-2"></i>
+                            Mettre à jour le profil
+                        </span>
+                        <span id="updateProfileLoading" class="hidden">
+                            <i class="fas fa-spinner fa-spin mr-2"></i>
+                            Mise à jour en cours...
+                        </span>
                     </button>
                 </div>
             </form>

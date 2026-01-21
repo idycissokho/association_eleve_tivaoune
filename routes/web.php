@@ -66,6 +66,9 @@ Route::middleware('auth')->group(function () {
     
     // Routes membres
     Route::post('/admin/members/store', [MemberController::class, 'store'])->name('admin.members.store');
+    Route::get('/admin/members/{id}', [MemberController::class, 'show'])->name('admin.members.show');
+    Route::put('/admin/members/{id}', [MemberController::class, 'update'])->name('admin.members.update');
+    Route::delete('/admin/members/{id}', [MemberController::class, 'destroy'])->name('admin.members.destroy');
     
     // Routes actualités
     Route::post('/admin/actualites/store', [ActualiteController::class, 'store'])->name('admin.actualites.store');
