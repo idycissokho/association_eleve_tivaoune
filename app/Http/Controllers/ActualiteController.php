@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class ActualiteController extends Controller
 {
@@ -66,7 +67,7 @@ class ActualiteController extends Controller
             'featured_image' => $imageName,
             'is_published' => true,
             'user_id' => auth()->id(),
-            'slug' => \Str::slug($request->titre)
+            'slug' => Str::slug($request->titre)
         ]);
         
         return redirect()->back()->with('success', 'Actualité créée avec succès');

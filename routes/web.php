@@ -68,6 +68,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/members/store', [MemberController::class, 'store'])->name('admin.members.store');
     Route::get('/admin/members/{id}', [MemberController::class, 'show'])->name('admin.members.show');
     Route::put('/admin/members/{id}', [MemberController::class, 'update'])->name('admin.members.update');
+    Route::put('/admin/members/{id}/update', [MemberController::class, 'updateMember'])->name('admin.members.updateMember');
     Route::delete('/admin/members/{id}', [MemberController::class, 'destroy'])->name('admin.members.destroy');
     
     // Routes actualités

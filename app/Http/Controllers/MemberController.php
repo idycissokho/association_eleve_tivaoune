@@ -76,6 +76,40 @@ class MemberController extends Controller
         return redirect()->route('dashboard')->with('success', 'Profil mis à jour avec succès ! 🎉');
     }
 
+    public function updateMember(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        
+        // Validation optimisée
+        $rules = [
+            'name' => 'required|string|max:255',
+            'phone' => 'nullable|string|max:20',
+            'current_profession' => 'nullable|string|max:255',
+            'current_location' => 'nullable|string|max:255',
+            'promotion_year' => 'nullable|string|max:10',
+            'bio' => 'nullable|string|max:1000',
+        ];
+        
+        // Valider email unique seulement si changé
+        if ($request->email !== $user->email) {
+            $rules['email'] = 'required|email|unique:users,email';
+        } else {
+            $rules['email'] = 'required|email';
+        }
+        
+        $request->validate($rules);
+
+        $user->update($request->only([
+            'name', 'email', 'phone', 'current_profession', 
+            'current_location', 'promotion_year', 'bio'
+        ]));
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Membre mis à jour avec succès ! 🎉'
+        ]);
+    }
+
     public function destroy($id)
     {
         $user = User::findOrFail($id);

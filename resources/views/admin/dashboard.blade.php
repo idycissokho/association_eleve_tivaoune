@@ -489,7 +489,7 @@ button:hover {
                 </thead>
                 <tbody id="membersTableBody" class="divide-y divide-gray-100">
                     @foreach(\App\Models\User::paginate(10) as $user)
-                    <tr class="hover:bg-blue-50/30 transition-all duration-200 member-row" data-name="{{ strtolower($user->name) }}" data-email="{{ strtolower($user->email) }}" data-profession="{{ strtolower($user->current_profession ?? '') }}" data-role="{{ $user->is_admin ? 'admin' : 'member' }}" data-status="{{ $user->is_active ? 'active' : 'inactive' }}">
+                    <tr class="hover:bg-blue-50/30 transition-all duration-200 member-row" data-member-id="{{ $user->id }}" data-name="{{ strtolower($user->name) }}" data-email="{{ strtolower($user->email) }}" data-profession="{{ strtolower($user->current_profession ?? '') }}" data-role="{{ $user->is_admin ? 'admin' : 'member' }}" data-status="{{ $user->is_active ? 'active' : 'inactive' }}">
                         <td class="py-4 px-6">
                             <div class="flex items-center space-x-4">
                                 <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
@@ -677,9 +677,21 @@ button:hover {
                             <input type="tel" id="editPhone" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all">
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Profession</label>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Année de promotion</label>
+                            <input type="text" id="editPromotionYear" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Profession actuelle</label>
                             <input type="text" id="editProfession" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all">
                         </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Localisation actuelle</label>
+                            <input type="text" id="editLocation" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Biographie</label>
+                        <textarea id="editBio" rows="4" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all" placeholder="Parlez-nous de ce membre..."></textarea>
                     </div>
                     <div class="flex justify-end space-x-4 pt-6">
                         <button type="button" onclick="closeEditModal()" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all">
@@ -1343,6 +1355,34 @@ function deleteImage(filename) {
     }
 }
 
+// Mise à jour dynamique de la ligne membre
+function updateMemberRow(memberId, formData) {
+    const row = document.querySelector(`tr[data-member-id="${memberId}"]`);
+    if (row) {
+        // Mettre à jour le nom
+        const nameCell = row.querySelector('.font-semibold');
+        if (nameCell) nameCell.textContent = formData.name;
+        
+        // Mettre à jour l'email
+        const emailCell = row.querySelector('.text-gray-900.font-medium');
+        if (emailCell) emailCell.textContent = formData.email;
+        
+        // Mettre à jour le téléphone
+        const phoneCell = emailCell?.nextElementSibling;
+        if (phoneCell) phoneCell.textContent = formData.phone || 'Non renseigné';
+        
+        // Mettre à jour la profession
+        const professionCell = row.querySelector('.text-sm.text-gray-900');
+        if (professionCell) professionCell.textContent = formData.current_profession || 'Non renseigné';
+        
+        // Animation de mise à jour
+        row.style.backgroundColor = '#dbeafe';
+        setTimeout(() => {
+            row.style.backgroundColor = '';
+        }, 1000);
+    }
+}
+
 // Fonctions pour la modification des membres
 function viewMember(memberId) {
     fetch(`/admin/members/${memberId}`)
@@ -1391,7 +1431,10 @@ function editMember(memberId) {
             document.getElementById('editName').value = user.name || '';
             document.getElementById('editEmail').value = user.email || '';
             document.getElementById('editPhone').value = user.phone || '';
+            document.getElementById('editPromotionYear').value = user.promotion_year || '';
             document.getElementById('editProfession').value = user.current_profession || '';
+            document.getElementById('editLocation').value = user.current_location || '';
+            document.getElementById('editBio').value = user.bio || '';
             
             document.getElementById('editMemberForm').dataset.memberId = memberId;
             document.getElementById('editMemberModal').classList.remove('hidden');
@@ -1423,11 +1466,14 @@ document.getElementById('editMemberForm').addEventListener('submit', function(e)
         name: document.getElementById('editName').value,
         email: document.getElementById('editEmail').value,
         phone: document.getElementById('editPhone').value,
+        promotion_year: document.getElementById('editPromotionYear').value,
         current_profession: document.getElementById('editProfession').value,
+        current_location: document.getElementById('editLocation').value,
+        bio: document.getElementById('editBio').value,
         _method: 'PUT'
     };
     
-    fetch(`/admin/members/${memberId}`, {
+    fetch(`/admin/members/${memberId}/update`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -1447,95 +1493,25 @@ document.getElementById('editMemberForm').addEventListener('submit', function(e)
                 icon: 'success',
                 title: 'Modifié !',
                 text: data.message,
-                timer: 2000,
+                timer: 1500,
                 showConfirmButton: false
             }).then(() => {
                 closeEditModal();
-                location.reload();
+                // Mise à jour dynamique au lieu de reload
+                updateMemberRow(memberId, formData);
             });
         } else {
             Swal.fire('Erreur', data.message, 'error');
         }
     })
     .catch(error => {
+        saveButton.disabled = false;
+        saveButtonText.classList.remove('hidden');
+        saveButtonLoading.classList.add('hidden');
         console.error('Erreur:', error);
-        Swal.fire('Erreur', 'Impossible de charger les données du membre', 'error');
+        Swal.fire('Erreur', 'Impossible de modifier le membre', 'error');
     });
-}
-    Swal.fire({
-        title: 'Supprimer ce membre ?',
-        text: `Êtes-vous sûr de vouloir supprimer ${memberName} ? Cette action est irréversible.`,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#ef4444',
-        cancelButtonColor: '#6b7280',
-        confirmButtonText: 'Oui, supprimer',
-        cancelButtonText: 'Annuler'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            deleteMemberFromDB(memberId);
-        }
-    });
-}
-
-function deleteMemberFromDB(memberId) {
-    Swal.fire({
-        title: 'Suppression en cours...',
-        text: 'Veuillez patienter',
-        allowOutsideClick: false,
-        didOpen: () => {
-            Swal.showLoading();
-        }
-    });
-    
-    fetch(`/admin/members/${memberId}`, {
-        method: 'DELETE',
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Erreur réseau');
-        }
-        return response.json();
-    })
-    .then(data => {
-        if (data.success) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Supprimé !',
-                text: data.message,
-                timer: 2000,
-                showConfirmButton: false
-            }).then(() => {
-                window.location.reload();
-            });
-        } else {
-            Swal.fire({
-                icon: 'error',
-                title: 'Erreur !',
-                text: data.message || 'Erreur lors de la suppression',
-                confirmButtonText: 'OK'
-            });
-        }
-    })
-    .catch(error => {
-        console.error('Erreur:', error);
-        Swal.fire({
-            icon: 'error',
-            title: 'Erreur !',
-            text: 'Une erreur réseau est survenue.',
-            confirmButtonText: 'OK'
-        });
-    });
-}
-
-function closeDeleteModal() {
-    document.getElementById('deleteModal').classList.add('hidden');
-}
+});
 
 // Fonctions de suppression des membres
 function confirmDelete(memberId, memberName) {
@@ -1692,9 +1668,6 @@ document.addEventListener('DOMContentLoaded', function() {
         <form id="actualiteForm" method="POST" action="{{ route('admin.actualites.store') }}" enctype="multipart/form-data" class="space-y-8">
             @csrf
             
-        <form id="actualiteForm" method="POST" action="{{ route('admin.actualites.store') }}" enctype="multipart/form-data" class="space-y-8">
-            @csrf
-            
             <!-- Titre avec animation -->
             <div class="form-group relative">
                 <input type="text" id="titre" name="titre" required value="{{ old('titre') }}"
@@ -1793,7 +1766,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
                 <div class="p-6">
                     <h3 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2">{{ $post->title }}</h3>
-                    <p class="text-gray-600 mb-4 line-clamp-3">{{ $post->excerpt ?? Str::limit(strip_tags($post->content), 100) }}</p>
+                    <p class="text-gray-600 mb-4 line-clamp-3">{{ $post->excerpt ?? \Illuminate\Support\Str::limit(strip_tags($post->content), 100) }}</p>
                     <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
                         <span><i class="fas fa-calendar mr-1"></i>{{ $post->created_at->format('d M Y') }}</span>
                         <span><i class="fas fa-user mr-1"></i>{{ $post->author->name ?? 'Admin' }}</span>
