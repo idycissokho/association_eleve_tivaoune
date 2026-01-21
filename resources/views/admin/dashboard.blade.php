@@ -331,13 +331,17 @@ button:hover {
                                 Mot de passe <span class="text-red-500">*</span>
                             </label>
                             <div class="relative">
-                                <input type="password" name="password" required 
+                                <input type="password" name="password" id="memberPassword" required 
                                        class="w-full px-4 py-3 pl-12 pr-12 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white shadow-sm hover:shadow-md"
                                        placeholder="Minimum 8 caractères">
                                 <i class="fas fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                                 <button type="button" onclick="togglePassword('password')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
                                     <i class="fas fa-eye" id="password-eye"></i>
                                 </button>
+                            </div>
+                            <div id="passwordError" class="text-red-500 text-sm mt-1 hidden">
+                                <i class="fas fa-exclamation-circle mr-1"></i>
+                                <span id="passwordErrorText"></span>
                             </div>
                         </div>
 
@@ -347,13 +351,17 @@ button:hover {
                                 Confirmer le mot de passe <span class="text-red-500">*</span>
                             </label>
                             <div class="relative">
-                                <input type="password" name="password_confirmation" required 
+                                <input type="password" name="password_confirmation" id="memberPasswordConfirm" required 
                                        class="w-full px-4 py-3 pl-12 pr-12 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white shadow-sm hover:shadow-md"
                                        placeholder="Répétez le mot de passe">
                                 <i class="fas fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                                 <button type="button" onclick="togglePassword('password_confirmation')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
                                     <i class="fas fa-eye" id="password_confirmation-eye"></i>
                                 </button>
+                            </div>
+                            <div id="passwordConfirmError" class="text-red-500 text-sm mt-1 hidden">
+                                <i class="fas fa-exclamation-circle mr-1"></i>
+                                <span id="passwordConfirmErrorText"></span>
                             </div>
                         </div>
                     </div>
@@ -1047,8 +1055,71 @@ function toggleActualiteForm() {
 
 
 
+// Password validation
+function validatePassword() {
+    const password = document.getElementById('memberPassword');
+    const passwordConfirm = document.getElementById('memberPasswordConfirm');
+    const passwordError = document.getElementById('passwordError');
+    const passwordErrorText = document.getElementById('passwordErrorText');
+    const passwordConfirmError = document.getElementById('passwordConfirmError');
+    const passwordConfirmErrorText = document.getElementById('passwordConfirmErrorText');
+    
+    let isValid = true;
+    
+    // Validate password length
+    if (password.value.length > 0 && password.value.length < 8) {
+        password.classList.add('border-red-300', 'bg-red-50');
+        password.classList.remove('border-green-300', 'bg-green-50', 'border-gray-200');
+        passwordErrorText.textContent = 'Le mot de passe doit contenir au moins 8 caractères';
+        passwordError.classList.remove('hidden');
+        isValid = false;
+    } else if (password.value.length >= 8) {
+        password.classList.add('border-green-300', 'bg-green-50');
+        password.classList.remove('border-red-300', 'bg-red-50', 'border-gray-200');
+        passwordError.classList.add('hidden');
+    } else {
+        password.classList.remove('border-red-300', 'bg-red-50', 'border-green-300', 'bg-green-50');
+        password.classList.add('border-gray-200');
+        passwordError.classList.add('hidden');
+    }
+    
+    // Validate password confirmation
+    if (passwordConfirm.value.length > 0) {
+        if (passwordConfirm.value !== password.value) {
+            passwordConfirm.classList.add('border-red-300', 'bg-red-50');
+            passwordConfirm.classList.remove('border-green-300', 'bg-green-50', 'border-gray-200');
+            passwordConfirmErrorText.textContent = 'Les mots de passe ne correspondent pas';
+            passwordConfirmError.classList.remove('hidden');
+            isValid = false;
+        } else {
+            passwordConfirm.classList.add('border-green-300', 'bg-green-50');
+            passwordConfirm.classList.remove('border-red-300', 'bg-red-50', 'border-gray-200');
+            passwordConfirmError.classList.add('hidden');
+        }
+    } else {
+        passwordConfirm.classList.remove('border-red-300', 'bg-red-50', 'border-green-300', 'bg-green-50');
+        passwordConfirm.classList.add('border-gray-200');
+        passwordConfirmError.classList.add('hidden');
+    }
+    
+    return isValid;
+}
+
 // Attacher l'event listener après le chargement du DOM
 document.addEventListener('DOMContentLoaded', function() {
+    // Password validation listeners
+    const memberPassword = document.getElementById('memberPassword');
+    const memberPasswordConfirm = document.getElementById('memberPasswordConfirm');
+    
+    if (memberPassword) {
+        memberPassword.addEventListener('input', validatePassword);
+        memberPassword.addEventListener('blur', validatePassword);
+    }
+    
+    if (memberPasswordConfirm) {
+        memberPasswordConfirm.addEventListener('input', validatePassword);
+        memberPasswordConfirm.addEventListener('blur', validatePassword);
+    }
     const editForm = document.getElementById('editForm');
     if (editForm) {
         editForm.addEventListener('submit', function(e) {
