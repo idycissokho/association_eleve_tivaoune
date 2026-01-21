@@ -9,6 +9,57 @@ use Illuminate\Support\Str;
 
 class ActualiteController extends Controller
 {
+    public function show($id)
+    {
+        $post = Post::findOrFail($id);
+        return response()->json($post);
+    }
+    
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'titre' => 'required|string|max:255',
+            'contenu' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120'
+        ]);
+        
+        $post = Post::findOrFail($id);
+        
+        // Préparer les données à mettre à jour (sans l'image par défaut)
+        $updateData = [
+            'title' => $request->titre,
+            'content' => $request->contenu,
+            'slug' => Str::slug($request->titre)
+        ];
+        
+        // Gérer l'upload d'image SEULEMENT si une nouvelle image est fournie
+        if ($request->hasFile('image')) {
+            // Supprimer l'ancienne image
+            if ($post->featured_image) {
+                $oldImagePath = public_path('images/' . $post->featured_image);
+                if (File::exists($oldImagePath)) {
+                    File::delete($oldImagePath);
+                }
+            }
+            
+            $image = $request->file('image');
+            $imageName = 'actualite' . $id . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images'), $imageName);
+            
+            // Ajouter la nouvelle image aux données à mettre à jour
+            $updateData['featured_image'] = $imageName;
+        }
+        // Si pas de nouvelle image, on garde l'ancienne (pas besoin de code spécifique)
+        
+        // Mettre à jour les données
+        $post->update($updateData);
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Actualité modifiée avec succès'
+        ]);
+    }
+    
     public function destroy($id)
     {
         try {

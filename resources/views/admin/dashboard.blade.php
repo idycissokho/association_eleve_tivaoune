@@ -712,6 +712,8 @@ button:hover {
     </div>
 
 
+
+
 </div>
 
 <!-- Gallery Management Section -->
@@ -1043,13 +1045,102 @@ function toggleActualiteForm() {
     }
 }
 
-function editActualite(id) {
-    Swal.fire({
-        icon: 'info',
-        title: 'Modification',
-        text: `Modification de l'actualité #${id}`,
-        timer: 2000
-    });
+
+
+// Attacher l'event listener après le chargement du DOM
+document.addEventListener('DOMContentLoaded', function() {
+    const editForm = document.getElementById('editForm');
+    if (editForm) {
+        editForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            console.log('Form submitted'); // Debug
+            
+            // Afficher le loading
+            const saveBtn = document.getElementById('saveBtn');
+            const saveBtnText = document.getElementById('saveBtnText');
+            const saveBtnLoading = document.getElementById('saveBtnLoading');
+            
+            saveBtn.disabled = true;
+            saveBtnText.classList.add('hidden');
+            saveBtnLoading.classList.remove('hidden');
+            
+            const formData = new FormData(this);
+            const id = document.getElementById('editId').value;
+            formData.append('_method', 'PUT');
+            
+            console.log('Sending request to:', `/admin/actualites/${id}`); // Debug
+            
+            fetch(`/admin/actualites/${id}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: formData
+            })
+            .then(response => {
+                console.log('Response status:', response.status); // Debug
+                return response.json();
+            })
+            .then(data => {
+                console.log('Response data:', data); // Debug
+                
+                // Restaurer le bouton
+                saveBtn.disabled = false;
+                saveBtnText.classList.remove('hidden');
+                saveBtnLoading.classList.add('hidden');
+                
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Modifiée !',
+                        text: data.message,
+                        timer: 2000,
+                        showConfirmButton: false
+                    }).then(() => {
+                        document.getElementById('simpleModal').classList.add('hidden');
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire('Erreur', data.message || 'Une erreur est survenue', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Fetch error:', error); // Debug
+                
+                // Restaurer le bouton en cas d'erreur
+                saveBtn.disabled = false;
+                saveBtnText.classList.remove('hidden');
+                saveBtnLoading.classList.add('hidden');
+                
+                Swal.fire('Erreur', 'Une erreur réseau est survenue', 'error');
+            });
+        });
+    } else {
+        console.error('editForm not found'); // Debug
+    }
+});
+
+function editActualite(button) {
+    const id = button.dataset.id;
+    const title = button.dataset.title;
+    const content = button.dataset.content;
+    const image = button.dataset.image;
+    
+    document.getElementById('editId').value = id;
+    document.getElementById('editTitle').value = title;
+    document.getElementById('editContent').value = content;
+    
+    // Afficher l'image actuelle si elle existe
+    const currentImagePreview = document.getElementById('currentImagePreview');
+    const currentImage = document.getElementById('currentImage');
+    if (image) {
+        currentImage.src = `/images/${image}`;
+        currentImagePreview.classList.remove('hidden');
+    } else {
+        currentImagePreview.classList.add('hidden');
+    }
+    
+    document.getElementById('simpleModal').classList.remove('hidden');
 }
 
 function deleteActualite(id) {
@@ -1772,7 +1863,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <span><i class="fas fa-user mr-1"></i>{{ $post->author->name ?? 'Admin' }}</span>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <button onclick="editActualite({{ $post->id }})" class="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-600 py-2 px-4 rounded-lg transition-all font-medium">
+                        <button data-id="{{ $post->id }}" data-title="{{ $post->title }}" data-content="{{ $post->content }}" data-image="{{ $post->featured_image }}" onclick="editActualite(this)" class="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-600 py-2 px-4 rounded-lg transition-all font-medium">
                             <i class="fas fa-edit mr-1"></i>Modifier
                         </button>
                         <button onclick="deleteActualite({{ $post->id }})" class="flex-1 bg-red-50 hover:bg-red-100 text-red-600 py-2 px-4 rounded-lg transition-all font-medium">
@@ -1935,6 +2026,105 @@ document.addEventListener('DOMContentLoaded', function() {
                         <span id="updateProfileLoading" class="hidden">
                             <i class="fas fa-spinner fa-spin mr-2"></i>
                             Mise à jour en cours...
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Premium Edit Modal -->
+<div id="simpleModal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+        <!-- Header Premium -->
+        <div class="bg-gradient-to-r from-blue-600 to-amber-600 p-8 rounded-t-3xl">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-white mb-2">
+                        <i class="fas fa-edit mr-3"></i>Modifier l'actualité
+                    </h2>
+                    <p class="text-blue-100">Modifiez les informations de votre actualité</p>
+                </div>
+                <button onclick="document.getElementById('simpleModal').classList.add('hidden')" class="bg-white/20 hover:bg-white/30 text-white p-3 rounded-xl transition-all">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Form Content -->
+        <div class="p-8">
+            <form id="editForm" class="space-y-6" enctype="multipart/form-data">
+                <input type="hidden" id="editId">
+                
+                <!-- Titre -->
+                <div class="form-group">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Titre de l'actualité <span class="text-red-500">*</span>
+                    </label>
+                    <div class="relative">
+                        <input type="text" id="editTitle" name="titre" required
+                               class="w-full px-4 py-3 pl-12 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white shadow-sm hover:shadow-md"
+                               placeholder="Entrez le titre de l'actualité">
+                        <i class="fas fa-heading absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                </div>
+                
+                <!-- Image actuelle -->
+                <div id="currentImagePreview" class="hidden">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Image actuelle</label>
+                    <div class="relative inline-block">
+                        <img id="currentImage" src="" alt="Image actuelle" class="w-32 h-24 object-cover rounded-xl shadow-lg">
+                    </div>
+                </div>
+                
+                <!-- Upload nouvelle image -->
+                <div class="form-group">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Nouvelle image (optionnel)</label>
+                    <div class="border-2 border-dashed border-blue-300 rounded-xl p-6 text-center hover:border-blue-500 transition-all bg-gradient-to-br from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100">
+                        <div class="space-y-3">
+                            <div class="w-12 h-12 mx-auto bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-cloud-upload-alt text-white text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-lg font-semibold text-gray-900">Glissez votre image ici</p>
+                                <p class="text-gray-600 mb-3">ou cliquez pour sélectionner</p>
+                                <input type="file" name="image" accept="image/*" class="hidden" id="imageUpload">
+                                <label for="imageUpload" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-lg hover:shadow-lg transition-all cursor-pointer">
+                                    <i class="fas fa-plus mr-2"></i>Choisir une image
+                                </label>
+                            </div>
+                            <p class="text-xs text-gray-500">JPG, PNG, WebP jusqu'à 5MB</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Contenu -->
+                <div class="form-group">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Contenu de l'actualité <span class="text-red-500">*</span>
+                    </label>
+                    <div class="relative">
+                        <textarea id="editContent" name="contenu" required rows="8"
+                                  class="w-full px-4 py-3 pl-12 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white shadow-sm hover:shadow-md resize-none"
+                                  placeholder="Rédigez le contenu de votre actualité..."></textarea>
+                        <i class="fas fa-align-left absolute left-4 top-4 text-gray-400"></i>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200">
+                    <button type="button" onclick="document.getElementById('simpleModal').classList.add('hidden')" 
+                            class="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all font-semibold">
+                        <i class="fas fa-times mr-2"></i>Annuler
+                    </button>
+                    <button type="submit" id="saveBtn"
+                            class="flex-1 px-8 py-3 bg-gradient-to-r from-blue-600 to-amber-600 text-white rounded-xl hover:from-blue-700 hover:to-amber-700 hover:shadow-lg transition-all font-semibold transform hover:scale-105">
+                        <span id="saveBtnText">
+                            <i class="fas fa-save mr-2"></i>Sauvegarder les modifications
+                        </span>
+                        <span id="saveBtnLoading" class="hidden">
+                            <i class="fas fa-spinner fa-spin mr-2"></i>Sauvegarde en cours...
                         </span>
                     </button>
                 </div>

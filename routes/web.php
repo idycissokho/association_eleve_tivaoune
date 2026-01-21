@@ -73,6 +73,8 @@ Route::middleware('auth')->group(function () {
     
     // Routes actualités
     Route::post('/admin/actualites/store', [ActualiteController::class, 'store'])->name('admin.actualites.store');
+    Route::get('/admin/actualites/{id}', [ActualiteController::class, 'show'])->name('admin.actualites.show');
+    Route::put('/admin/actualites/{id}', [ActualiteController::class, 'update'])->name('admin.actualites.update');
     Route::delete('/admin/actualites/{id}', [ActualiteController::class, 'destroy'])->name('admin.actualites.destroy');
 });
 
