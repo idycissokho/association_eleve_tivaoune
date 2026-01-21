@@ -543,10 +543,10 @@ button:hover {
                                 <button onclick="viewMember({{ $user->id }})" class="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" title="Voir le profil">
                                     <i class="fas fa-eye"></i>
                                 </button>
-                                @if(auth()->user()->is_admin && $user->id !== auth()->id())
                                 <button onclick="editMember({{ $user->id }})" class="p-2 text-gray-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-all" title="Modifier">
                                     <i class="fas fa-edit"></i>
                                 </button>
+                                @if(auth()->user()->is_admin && $user->id !== auth()->id())
                                 <button onclick="confirmDelete({{ $user->id }}, '{{ $user->name }}')" class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all" title="Supprimer">
                                     <i class="fas fa-trash"></i>
                                 </button>
@@ -1458,12 +1458,10 @@ document.getElementById('editMemberForm').addEventListener('submit', function(e)
         }
     })
     .catch(error => {
-        // Restaurer le bouton en cas d'erreur
-        saveButton.disabled = false;
-        saveButtonText.classList.remove('hidden');
-        saveButtonLoading.classList.add('hidden');
-        
-function confirmDelete(memberId, memberName) {
+        console.error('Erreur:', error);
+        Swal.fire('Erreur', 'Impossible de charger les données du membre', 'error');
+    });
+}
     Swal.fire({
         title: 'Supprimer ce membre ?',
         text: `Êtes-vous sûr de vouloir supprimer ${memberName} ? Cette action est irréversible.`,
@@ -1986,3 +1984,4 @@ document.addEventListener('DOMContentLoaded', function() {
 @endsection
 
 <script src="{{ asset('js/members-premium.js') }}"></script>
+<script src="{{ asset('js/view-member.js') }}"></script>
